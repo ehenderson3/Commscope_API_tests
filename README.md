@@ -1,20 +1,21 @@
 # README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
+Install java and Maven
+https://www.screencast.com/t/a0FpBqQ0
 
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* This repo contains the API test for the ComSearch project
+
 
 ### How do I get set up? ###
 
 * Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
+* Download an IDE
+* Dependencies (testNG, restassured, hamcrest and jackson-databind )
+Add a comment to this line
 * How to run tests
+** IDE = right click test and select run
+** Maven mvn clean test
 * Deployment instructions
 
 ### Contribution guidelines ###
