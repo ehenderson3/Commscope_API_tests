@@ -5,26 +5,23 @@ import comm.service.model.Licensee;
 import static com.jayway.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import com.jayway.restassured.http.ContentType;
+import comm.service.model.RestAssuredConfig;
+import org.apache.http.HttpStatus;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Random;
 
-public class ProjectTest {
+public class ProjectTest extends RestAssuredConfig {
     Random rndNum = new Random();
     int randomNumber = rndNum.nextInt(100000);
-    @BeforeClass
-    public static void init() {
-        baseURI = "https://comsearch.dev.surgeforward.com";
-        port = 8443;
 
-    }
 
     @DataProvider(name = "Default Licensee")
     public Object[][] createLicData() {
         return new Object[][]{
-                {new Licensee("Official Company"+ randomNumber, "enrique@surgeforwoard.com", "34iij4j4u", "Bob Anderson")},
+                {new Licensee("Official Company"+ randomNumber, "enrique@surgeforwoard.com", "34iij4j4u", "PATH")},
         };
     }
 
@@ -38,7 +35,14 @@ public class ProjectTest {
     @DataProvider(name = "Default Project")
     public Object[][] createProjectData() {
         return new Object[][]{
-                {new Projects(33, 129, "The ProJect Is Ready", "PATH")},
+                {new Projects(38, 144, "Ilk Is Ready"+randomNumber, "PATH")},
+        };
+    }
+
+    @DataProvider(name = "Default Project2")
+    public Object[][] createProjectData2() {
+        return new Object[][]{
+                {new Projects(36, 187, "The ProJect Is Ready"+randomNumber, "PATH")},
         };
     }
 
@@ -50,20 +54,28 @@ public class ProjectTest {
         };
     }
 
-    @DataProvider(name = "Default Get Project Data")
+    @DataProvider(name = "DefaultGetProjectData")
     public Object[][] getProjectQueryData() {
         return new Object[][]{
                 {new Projects(42, 130, "Time Tested"+randomNumber, "PATH")},
         };
     }
 
+    /*
+    MethodName_StateUnderTest_ExpectedBehavior:
+    There are arguments against this strategy that if method
+    names change as part of code refactoring than test name like this should also change or it becomes
+    difficult to comprehend at a later stage. Following are some of the example:
+        isAdult_AgeLessThan18_False
+        withdrawMoney_InvalidAccount_ExceptionThrown
+        admitStudent_MissingMandatoryFields_FailToAdmit
+     */
 
     int licenseeId = 0;
     int projectId = 0;
 
     @Test(priority = 0, dataProvider = "Default Licensee")
-    public void postLicensee(Licensee licensee) {
-
+    public void PostLicensee_ValidRequiredLiceseeInput_LicenseeRecordIsCreated201(Licensee licensee) {
 
         licenseeId = given()
                 .contentType(ContentType.JSON)
@@ -78,13 +90,52 @@ public class ProjectTest {
                 .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
                 .extract()
                 .path("entity.licenseeId");
-
     }
 
+    @Test(dataProvider = "Default Project")
+    public void PostProject_ValidRequiredProjectInput_ProjectRecordIsCreated201(Projects projects) {
 
+        projectId = given()
+                .contentType(ContentType.JSON)
+                .body(projects)
+                .when()
+                .post("/projects")
+                .then()
+                .statusCode(201)
+                .body("entity.projectName", is(projects.getProjectName()))
+                .body("entity.projectType", is(projects.getProjectType()))
+                .extract()
+                .path("entity.projectId");
+    }
+
+    @Test( dataProvider = "Default Project2")
+    public void GetProject_ValidExistingProjectRecord_ProjectRecordIsCLocated200(Projects projects) {
+
+        projectId = given()
+                .contentType(ContentType.JSON)
+                .body(projects)
+                .when()
+                .post("/projects")
+                .then()
+                .statusCode(201)
+                .body("entity.projectName", is(projects.getProjectName()))
+                .body("entity.projectType", is(projects.getProjectType()))
+                .extract()
+                .path("entity.projectId");
+
+
+        given()
+                .pathParam("projectId", projectId)
+                .when()
+                .get("/projects/{projectId}")
+                .then()
+                .statusCode(200)
+                .body("entity.projectName", is(projects.getProjectName()))
+                .body("entity.projectType", is(projects.getProjectType()));
+    }
 
     @Test(dataProvider = "Default long")
-    public void postValidate400WhenLongProjectName(Projects projects) {
+    public void PostProject_ProjectNameMoreTban40_InvalidLength400(Projects projects) {
 
                  given()
                 .contentType(ContentType.JSON)
@@ -99,25 +150,10 @@ public class ProjectTest {
                 //.body("errors.defaultMessage",equalTo("[Project Name cannot exceed 40 characters]"));
     }
 
-    @Test(dataProvider = "Default Project")
-    public void postCreateProject(Projects projects) {
 
-        projectId = given()
-                .contentType(ContentType.JSON)
-                .body(projects)
-                .when()
-                .post("/projects")
-                .then()
-                .statusCode(201)
-                //.body("entity.defaultLicensee.licenseeId", is(projects.getDefaultLicenseeId()))
-                .body("entity.projectName", is(projects.getProjectName()))
-                .body("entity.projectType", is(projects.getProjectType()))
-                .extract()
-                .path("entity.projectId");
-    }
 
     @Test(dataProvider = "Unique Project Name Test Data")
-    public void postUniqueProjectName(Projects projects) {
+    public void PostProject_ProjectNameNotUnique_SC_CONFLICT(Projects projects) {
 
         given()
                 .contentType(ContentType.JSON)
@@ -125,41 +161,15 @@ public class ProjectTest {
                 .when()
                 .post("/projects")
                 .then()
-                .statusCode(500);
+                .statusCode(HttpStatus.SC_CONFLICT);
 
     }
 
-    @Test( dataProvider = "Default Get Project Data")
-    public void getRetrieveProject(Projects projects) {
-
-        projectId = given()
-                .contentType(ContentType.JSON)
-                .body(projects)
-                .when()
-                .post("/projects")
-                .then()
-                .statusCode(201)
-                 //.body("entity.defaultLicensee.licenseeId", is(projects.getDefaultLicenseeId()))
-                 .body("entity.projectName", is(projects.getProjectName()))
-                 .body("entity.projectType", is(projects.getProjectType()))
-                 .extract()
-                 .path("entity.projectId");
 
 
-                 given()
-                 .pathParam("projectId", projectId)
-                 .when()
-                 .get("/projects/{projectId}")
-                 .then()
-                 .statusCode(200)
-                 //.body("entity.defaultLicensee.licenseeId", is(projects.getDefaultLicenseeId()))
-                 .body("entity.projectName", is(projects.getProjectName()))
-                 .body("entity.projectType", is(projects.getProjectType()));
-        }
 
-
-    @Test( dataProvider = "Default Get Project Data")
-    public void getProjectGlobalDefalts(Projects projects) {
+    @Test( dataProvider = "DefaultGetProjectData")
+    public void GetProject_ValidProject_DefaultGlobalValuesSet(Projects projects) {
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -168,7 +178,6 @@ public class ProjectTest {
                 .post("/projects")
         .then()
                 .statusCode(201)
-                //.body("entity.defaultLicensee.licenseeId", is(projects.getDefaultLicenseeId()))
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", equalTo(projects.getProjectType()))
         .extract()
@@ -183,7 +192,6 @@ public class ProjectTest {
         .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
-                //.body("entity.defaultLicensee.licenseeId", is(projects.getDefaultLicenseeId()))
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", is(projects.getProjectType()))
                 .body("entity.createUser.userId", equalTo(1))
