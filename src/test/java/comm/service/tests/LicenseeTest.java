@@ -5,22 +5,28 @@ import comm.service.model.Licensee;
 import static com.jayway.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 import com.jayway.restassured.http.ContentType;
+import comm.service.model.RestAssuredConfig;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Random;
 
-public class LicenseeTest {
+public class LicenseeTest extends RestAssuredConfig{
     Random rndNum = new Random();
     int randomNumber = rndNum.nextInt(100000);
-    @BeforeClass
-    public static void init(){
-        baseURI = "https://comsearch.dev.surgeforward.com";
-        port = 8443;
-    }
+
+    /*
+    MethodName_StateUnderTest_ExpectedBehavior:
+    There are arguments against this strategy that if method
+    names change as part of code refactoring than test name like this should also change or it becomes
+    difficult to comprehend at a later stage. Following are some of the example:
+        isAdult_AgeLessThan18_False
+        withdrawMoney_InvalidAccount_ExceptionThrown
+        admitStudent_MissingMandatoryFields_FailToAdmit
+     */
 
     @Test()
-    public void getlicensee() {
+    public void GetLicensee_AvailableEndPoint_Returns200StatusCode() {
         when()
                 .get("/licensees")
                 .then()
@@ -28,7 +34,7 @@ public class LicenseeTest {
     }
 
     @Test
-    public void postLicensee() {
+    public void GetLicensee_ValidLicenseeId_Returns200StatusCode() {
 
 
         Licensee licensee = new Licensee("New Test", "eh@thebestco.com", "121", "Harry Henderson");
@@ -62,11 +68,8 @@ public class LicenseeTest {
     }
 
 
-
-
-
     @Test
-    public void postLicenseeNoName() {
+    public void PostLicensee_WithoutName_WHAT_SHOULD_HAPPEN() {
 
 
         Licensee licensee = new Licensee("", "eh@thebestco.com", "as8sa9a8safd89", "Harry Henderson");
@@ -84,7 +87,7 @@ public class LicenseeTest {
                 .body("entity.licenseeCode", is(licensee.getLicenseeCode()));
     }
     @Test
-    public void postLicenseeNoNameNoEmail() {
+    public void PostLicensee_WithoutEmail_WHAT_SHOULD_HAPPEN() {
 
 
         Licensee licensee = new Licensee("", "", "as8sa9a8safd89", "Harry Henderson");
@@ -103,7 +106,7 @@ public class LicenseeTest {
     }
 
     @Test
-    public void postLicenseeNoNameNoEmailNoLicCode() {
+    public void PostLicensee_WithoutNameOrEmail_WHAT_SHOULD_HAPPEN() {
 
 
         Licensee licensee = new Licensee("", "", "", "Harry Henderson");
@@ -122,7 +125,7 @@ public class LicenseeTest {
     }
 
     @Test
-    public void postLicenseeNoNameNoEmailNoLicCodeNoName() {
+    public void PostLicensee_WithoutNameEmailLicCodeORContact_WHAT_SHOULD_HAPPEN() {
 
 
         Licensee licensee = new Licensee("", "", "", "");
@@ -140,9 +143,7 @@ public class LicenseeTest {
                 .body("entity.licenseeCode", is(licensee.getLicenseeCode()));
     }
 
-    {
 
-    }
 
 }
 
