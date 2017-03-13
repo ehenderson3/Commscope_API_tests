@@ -9,7 +9,6 @@ public class Licensee {
     private String contactEmail;
     private String contactName;
     private String licenseeCode;
-    //private int licenseeId;
 
     public Licensee(){};
 
@@ -25,7 +24,6 @@ public class Licensee {
         this.companyName = companyName;
         this.contactEmail = contactEmail;
         this.licenseeCode = licenseeCode;
-       // this.licenseeId = licenseeId;
     };
 
 
@@ -64,11 +62,5 @@ public class Licensee {
         this.licenseeCode = licenseeCode;
     }
 
-//    public int getLicenseeId(){
-//        return licenseeId;
-//    }
-//
-//    public void setLicenseeId(int licenseeCode){
-//        this.licenseeId = licenseeId;
-//    }
+
 }
