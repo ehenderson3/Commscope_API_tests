@@ -1,15 +1,16 @@
 package comm.service.tests;
 
 
-import comm.service.model.Licensee;
-import static com.jayway.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
 import com.jayway.restassured.http.ContentType;
+import comm.service.model.Licensee;
 import comm.service.model.RestAssuredConfig;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.Random;
+
+import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.is;
 
 public class LicenseeTest extends RestAssuredConfig{
     Random rndNum = new Random();
@@ -57,6 +58,7 @@ public class LicenseeTest extends RestAssuredConfig{
                 .pathParam("licenseeId", licenseeId)
         .when()
                 .get("/licensees/{licenseeId}")
+                .prettyPeek()
         .then()
                 .statusCode(200)
                 .body("entity.licenseeId", is(licenseeId))
@@ -68,8 +70,9 @@ public class LicenseeTest extends RestAssuredConfig{
     }
 
 
+
     @Test
-    public void PostLicensee_WithoutName_WHAT_SHOULD_HAPPEN() {
+    public void PostLicensee_WithoutName_LicenseeSaved() {
 
 
         Licensee licensee = new Licensee("", "eh@thebestco.com", "as8sa9a8safd89", "Harry Henderson");
@@ -87,7 +90,7 @@ public class LicenseeTest extends RestAssuredConfig{
                 .body("entity.licenseeCode", is(licensee.getLicenseeCode()));
     }
     @Test
-    public void PostLicensee_WithoutEmail_WHAT_SHOULD_HAPPEN() {
+    public void PostLicensee_WithoutEmail_LicenseeSaved() {
 
 
         Licensee licensee = new Licensee("", "", "as8sa9a8safd89", "Harry Henderson");
@@ -106,7 +109,7 @@ public class LicenseeTest extends RestAssuredConfig{
     }
 
     @Test
-    public void PostLicensee_WithoutNameOrEmail_WHAT_SHOULD_HAPPEN() {
+    public void PostLicensee_WithoutNameOrEmail_LicenseeSaved() {
 
 
         Licensee licensee = new Licensee("", "", "", "Harry Henderson");
@@ -125,7 +128,7 @@ public class LicenseeTest extends RestAssuredConfig{
     }
 
     @Test
-    public void PostLicensee_WithoutNameEmailLicCodeORContact_WHAT_SHOULD_HAPPEN() {
+    public void PostLicensee_WithoutNameEmailLicCodeORContact_LicenseeSaved() {
 
 
         Licensee licensee = new Licensee("", "", "", "");
