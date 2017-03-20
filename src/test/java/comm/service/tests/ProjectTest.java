@@ -1,20 +1,19 @@
 package comm.service.tests;
 
-import comm.service.model.Projects;
-import comm.service.model.Licensee;
-import static com.jayway.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
 import com.jayway.restassured.http.ContentType;
+import comm.service.model.Licensee;
+import comm.service.model.Projects;
 import comm.service.model.RestAssuredConfig;
-import org.apache.http.HttpStatus;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import static com.jayway.restassured.RestAssured.given;
+import static comm.service.tests.common.Data.*;
+import static org.hamcrest.Matchers.*;
 
 public class ProjectTest extends RestAssuredConfig {
     Random rndNum = new Random();
@@ -27,16 +26,10 @@ public class ProjectTest extends RestAssuredConfig {
     int randomNumber6 = rndNum.nextInt(1000);
     int randomNumber7 = rndNum.nextInt(1000);
 
-
-
-
-
     @DataProvider(name = "Default Licensee")
     public Object[][] createLicData() {
         return new Object[][]{
                 {new Licensee("Official Company"+ randomNumber1, "enrique@surgeforwoard.com", "34iij4j4u", "PATH")},
-
-
         };
 
     }
@@ -58,7 +51,7 @@ public class ProjectTest extends RestAssuredConfig {
     @DataProvider(name = "Default Project2")
     public Object[][] createProjectData2() {
         return new Object[][]{
-                {new Projects(36, 187, "Default Project2"+randomNumber4, "PATH")},
+                {new Projects(36, 187, "Default Project2aq"+randomNumber4, "PATH")},
         };
     }
 
@@ -108,6 +101,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .post("/licensees")
                 .then()
                 .statusCode(201)
+                .statusLine("HTTP/1.1 201 ")
                 .body("entity.companyName", is(licensee.getCompanyName()))
                 .body("entity.contactEmail", is(licensee.getContactEmail()))
                 .body("entity.contactName", is(licensee.getContactName()))
@@ -126,6 +120,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .post("/projects")
                 .then()
                 .statusCode(201)
+                .statusLine("HTTP/1.1 201 ")
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", is(projects.getProjectType()))
                 .extract()
@@ -142,6 +137,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .post("/projects")
                 .then()
                 .statusCode(201)
+                .statusLine("HTTP/1.1 201 ")
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", is(projects.getProjectType()))
                 .extract()
@@ -154,6 +150,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .get("/projects/{projectId}")
                 .then()
                 .statusCode(200)
+                .statusLine("HTTP/1.1 200 ")
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", is(projects.getProjectType()));
     }
@@ -166,15 +163,14 @@ public class ProjectTest extends RestAssuredConfig {
                 .body(projects)
             .when()
                 .post("/projects")
+                .prettyPeek()
                 .then()
                 .statusCode(400)
+                .statusLine("HTTP/1.1 400 ")
                 .body("error",equalTo("Bad Request"))
-                .body("exception",equalTo("org.springframework.web.bind.MethodArgumentNotValidException" ));
-                //.body("errors.codes",equalTo("[[projectName[invalidLength.projectCreateDto.projectName, projectName[invalidLength.projectName, projectName[invalidLength.java.lang.String, projectName[invalidLength]]"));
-                //.body("errors.defaultMessage",equalTo("[Project Name cannot exceed 40 characters]"));
+                .body("exception",equalTo("org.springframework.web.bind.MethodArgumentNotValidException" ))
+                .body("errors.defaultMessage", hasItem("Project Name cannot exceed 40 characters"));
     }
-
-
 
     @Test(dataProvider = "Unique Project Name Test Data")
     public void PostProject_ProjectNameNotUnique_SC_CONFLICT(Projects projects) {
@@ -184,14 +180,11 @@ public class ProjectTest extends RestAssuredConfig {
                 .body(projects)
                 .when()
                 .post("/projects")
-                    .prettyPeek()
+                .prettyPeek()
                 .then()
-                .statusCode(HttpStatus.SC_CONFLICT);
-
+                .statusLine("HTTP/1.1 409 ")
+                .body("message", is("Duplicate Constraint Error.  Error creating project"));
     }
-
-
-
 
     @Test( dataProvider = "DefaultGetProjectData")
     public void GetProject_ValidProject_DefaultGlobalValuesSet(Projects projects) {
@@ -232,7 +225,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     }
 
-
     @Test
     public void GetProject_ValidProject_DefaultGlobalValue() {
         Projects projects = new Projects(42, 130, "DefaultGlobal 3"+randomNumber+randomNumber2, "PATH");
@@ -253,9 +245,9 @@ public class ProjectTest extends RestAssuredConfig {
         given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
-                .when()
+            .when()
                 .get("/projects/{projectId}")
-                .then()
+            .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
                 .body("entity.projectName", is(projects.getProjectName()))
@@ -280,9 +272,9 @@ public class ProjectTest extends RestAssuredConfig {
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
-                .when()
+            .when()
                 .post("/projects")
-                .then()
+            .then()
                 .statusCode(201)
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", equalTo(projects.getProjectType()))
@@ -297,12 +289,12 @@ public class ProjectTest extends RestAssuredConfig {
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
                 .log().all()
-                .when()
+            .when()
                 .put("/projects/{projectId}")
                 .prettyPeek()
-                .then()
+            .then()
                 .statusCode(200)
-                .body("message", is("Successfully updated Project"));
+                .body("message", is(PROJECT_SUCCESS_MESSAGE));
 
 
 
@@ -359,7 +351,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("message", containsString("Could not read document: Can not deserialize value of type java.lang.Float from String \"A\": not a valid Float value"));
+                .body("message", containsString(ERROR_CANNOT_DESERIALIZE_FLOAT+"\"A\": not a valid Float value"));
 
 
 
@@ -385,19 +377,30 @@ public class ProjectTest extends RestAssuredConfig {
 
     }
 
+    @Test
+    public void GetProject_InvalidProjectId_404Error() {
 
-
+        given()
+                .pathParam("projectId", "1234*&^%")
+                .queryParam("unitType", "US")
+                .when()
+                .get("/projects/{projectId}")
+                .prettyPeek()
+                .then()
+                .statusCode(500)
+                .statusLine("HTTP/1.1 500 ");
+    }
 
     @Test
-    public void PutProject_EditAlphaminimumClearance_minimumClearanceUnrecognizedToken() {
-        Projects projects = new Projects(42, 130, "EditAlphaminimumClea"+randomNumber7, "PATH");
+    public void PutProject_EditMinimumClearanceWithIllegalAlpha_UnrecognizedToken400() {
+        Projects projects = new Projects(42, 130, "EditAlphaminimum9ea95"+randomNumber7, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
-                .when()
+            .when()
                 .post("/projects")
-                .then()
+            .then()
                 .statusCode(201)
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", equalTo(projects.getProjectType()))
@@ -407,28 +410,28 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,String> ProjectMapI = new HashMap<String, String>();
         ProjectMapI.put("fresnelZoneRadius","A");
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
                 .log().all()
-                .when()
+            .when()
                 .put("/projects/{projectId}")
                 .prettyPeek()
-                .then()
+            .then()
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("message", containsString("Could not read document: Can not deserialize value of type java.lang.Integer from String \"A\": not a valid Integer value"));
+                .body("message", containsString(ERROR_CANNOT_DESERIALIZE_STRING+"\"A\": not a valid Integer value"));
 
 
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
-                .when()
+            .when()
                 .get("/projects/{projectId}")
-                .then()
+            .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
                 .body("entity.projectName", is(projects.getProjectName()))
@@ -446,10 +449,62 @@ public class ProjectTest extends RestAssuredConfig {
     }
 
 
+    @Test
+    public void PutProject_EditMinimumClearanceWithAtSymbol_UnrecognizedToken400() {
+        Projects projects = new Projects(42, 130, "EditAlphaminimumClea96"+randomNumber7, "PATH");
+
+        projectId = given()
+                .contentType(ContentType.JSON)
+                .body(projects)
+            .when()
+                .post("/projects")
+            .then()
+                .statusCode(201)
+                .body("entity.projectName", is(projects.getProjectName()))
+                .body("entity.projectType", equalTo(projects.getProjectType()))
+                .extract()
+                .path("entity.projectId");
+
+        Map<String,String> ProjectMapI = new HashMap<String, String>();
+        ProjectMapI.put("fresnelZoneRadius","@");
 
 
 
+            given()
+                .contentType(ContentType.JSON)
+                .body(ProjectMapI)
+                .pathParam("projectId", projectId)
+                .log().all()
+            .when()
+                .put("/projects/{projectId}")
+                .prettyPeek()
+            .then()
+                .statusCode(400)
+                .statusLine("HTTP/1.1 400 ")
+                .body("error",is("Bad Request"))
+                .body("message", containsString(ERROR_CANNOT_DESERIALIZE_INT +"\"@\": not a valid Integer value"));
 
+            given()
+                .pathParam("projectId", projectId)
+                .queryParam("unitType", "US")
+            .when()
+                .get("/projects/{projectId}")
+            .then()
+                .statusCode(200)
+                .statusLine("HTTP/1.1 200 ")
+                .body("entity.projectName", is(projects.getProjectName()))
+                .body("entity.projectType", is(projects.getProjectType()))
+                .body("entity.createUser.userId", equalTo(1))
+                .body("entity.createUser.userName", equalTo("Lego Admin"))
+                .body("entity.unitType", equalTo("US"))
+                .body("entity.fresnelZoneRadius", equalTo(60.0f))
+                .body("entity.kFactor", equalTo(1.0f))
+                .body("entity.minimumClearance", equalTo(0f))
+                .body("entity.minimumClearanceUS", equalTo(0f))
+                .body("entity.targetAvailability", equalTo(99.995f))
+                .body("entity.showSiteLocationDetails", equalTo(false));
+
+    }
 
     @Test
     public void PutProject_EditAlphaFresnelZoneRadius_FresnelUnrecognizedToken() {
@@ -458,9 +513,9 @@ public class ProjectTest extends RestAssuredConfig {
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
-                .when()
+            .when()
                 .post("/projects")
-                .then()
+            .then()
                 .statusCode(201)
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", equalTo(projects.getProjectType()))
@@ -475,23 +530,23 @@ public class ProjectTest extends RestAssuredConfig {
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
                 .log().all()
-                .when()
+            .when()
                 .put("/projects/{projectId}")
                 .prettyPeek()
-                .then()
+            .then()
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("message", containsString("Could not read document: Can not deserialize value of type java.lang.Integer from String \"A\": not a valid Integer value"));
+                .body("message", containsString(ERROR_CANNOT_DESERIALIZE_INT +"\"A\": not a valid Integer value"));
 
 
 
         given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
-                .when()
+            .when()
                 .get("/projects/{projectId}")
-                .then()
+            .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
                 .body("entity.projectName", is(projects.getProjectName()))
@@ -515,9 +570,9 @@ public class ProjectTest extends RestAssuredConfig {
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
-                .when()
+            .when()
                 .post("/projects")
-                .then()
+            .then()
                 .statusCode(201)
                 .body("entity.projectName", is(projects.getProjectName()))
                 .body("entity.projectType", equalTo(projects.getProjectType()))
@@ -527,21 +582,19 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,String> ProjectMapI = new HashMap<String, String>();
         ProjectMapI.put("kFactor","A");
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
                 .log().all()
-                .when()
+            .when()
                 .put("/projects/{projectId}")
                 .prettyPeek()
-                .then()
+            .then()
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("message", containsString("Could not read document: Can not deserialize value of type java.lang.Float from String \"A\""));
-
-
+                .body("message", containsString(ERROR_CANNOT_DESERIALIZE_FLOAT +"\"A\""));
 
         given()
                 .pathParam("projectId", projectId)
@@ -564,12 +617,6 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
-
-
-
-
-
-
 
     @Test
     public void PutProject_EditOutsideBouderyHighFresnelZoneRadius_NewFresnelOutOfRangeError() {
@@ -589,8 +636,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("fresnelZoneRadius",1001);
 
-
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -602,13 +648,10 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("fresnel zone radius is outside the range value"))
-        ;
+                .body("errors.defaultMessage", hasItem(ERROR_FRESEL_ZONE_OUT_OF_RANGE));
 
-
-        given()
+            given()
                 .pathParam("projectId", projectId)
-                //.queryParam("unitType", "US")
                 .when()
                 .get("/projects/{projectId}")
                 .then()
@@ -618,21 +661,17 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.projectType", is(projects.getProjectType()))
                 .body("entity.createUser.userId", equalTo(1))
                 .body("entity.createUser.userName", equalTo("Lego Admin"))
-                //.body("entity.unitType", equalTo("US"))
                 .body("entity.fresnelZoneRadius", equalTo(60.0f))
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
                 .body("entity.targetAvailability", equalTo(99.995f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
-
     }
 
     @Test
-    public void PutProject_EditOutsideBouderyLowFresnelZoneRadius_NewFresnelOutOfRangeError() {
-        Projects projects = new Projects(42, 130, "OutsideBouderyLowFres"+randomNumber4, "PATH");
-        String a;
-        a = "fresnel zone radius is outside the range value";
+    public void PutProject_EditFresnelZoneRadiusToNegativeOne_NewFresnelOutOfRangeError() {
+        Projects projects = new Projects(42, 130, "OutsideBouderyLowFres"+randomNumber6+randomNumber4, "PATH");
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
@@ -648,7 +687,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("fresnelZoneRadius", -1);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -660,9 +699,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("fresnel zone radius is outside the range value"));
+                .body("errors.defaultMessage", hasItem(ERROR_FRESEL_ZONE_OUT_OF_RANGE));
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 //.queryParam("unitType", "US")
                 .when()
@@ -684,10 +723,8 @@ public class ProjectTest extends RestAssuredConfig {
 
     }
     @Test
-    public void PutProject_EditOutsideBouderyLowKFactor_KFactorOutOfRangeError() {
+    public void PutProject_EditKFactorTo001_KFactorOutOfRangeError() {
         Projects projects = new Projects(42, 130, "OutsideBouderyLowKFac"+randomNumber5, "PATH");
-        String a;
-        a = "fresnel zone radius is outside the range value";
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
@@ -701,9 +738,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .path("entity.projectId");
 
         Map<String,Double> ProjectMapD = new HashMap<String, Double>();
-        ProjectMapD.put("kFactor", 0.001);
+        ProjectMapD.put("kFactor", -1.0);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapD)
                 .pathParam("projectId", projectId)
@@ -715,9 +752,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("K Factor is outside the range value"));
+                .body("errors.defaultMessage", hasItem(ERROR_K_FACTOR_OUT_OF_RANGE));
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
                 .when()
@@ -740,10 +777,8 @@ public class ProjectTest extends RestAssuredConfig {
     }
 
     @Test
-    public void PutProject_EditOutsideBouderyHighKFactor_KFactorOutOfRangeError() {
+    public void PutProject_EditKFactorToPoint001_KFactorOutOfRangeError() {
         Projects projects = new Projects(42, 130, "BouderyHighKFactorA"+randomNumber6, "PATH");
-        String a;
-        a = "fresnel zone radius is outside the range value";
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
@@ -759,7 +794,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Double> ProjectMapD = new HashMap<String, Double>();
         ProjectMapD.put("kFactor", 0.001);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapD)
                 .pathParam("projectId", projectId)
@@ -771,9 +806,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("K Factor is outside the range value"));
+                .body("errors.defaultMessage", hasItem(ERROR_K_FACTOR_OUT_OF_RANGE));
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 //.queryParam("unitType", "US")
                 .when()
@@ -796,10 +831,9 @@ public class ProjectTest extends RestAssuredConfig {
     }
 
     @Test
-    public void PutProject_EditWithInBouderyKFactor_KFactorEditSaved() {
+    public void PutProject_EditKFactorTo20_KFactorEditSaved() {
         Projects projects = new Projects(42, 130, "hInBouderyKFact"+randomNumber7, "PATH");
-        String a;
-        a = "fresnel zone radius is outside the range value";
+
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
@@ -815,7 +849,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("kFactor", 20);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -827,9 +861,8 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ");
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
-                //.queryParam("unitType", "US")
                 .when()
                 .get("/projects/{projectId}")
                 .then()
@@ -852,7 +885,7 @@ public class ProjectTest extends RestAssuredConfig {
 
 
     @Test
-    public void PutProject_EditOutsideBouderyLowMinimumClearance_MinimumClearanceOutOfRangeError() {
+    public void PutProject_EditMinimumClearanceToNegative1000_MinimumClearanceOutOfRangeError() {
         Projects projects = new Projects(42, 130, "Time Tested 82S"+randomNumber3, "PATH");
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -869,7 +902,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("minimumClearance", -1001);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -881,9 +914,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("Minimum Clearance is outside the range value"));
+                .body("errors.defaultMessage", hasItem(ERROR_MIN_CLEARANCE_OUT_OF_RANGE));
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 //.queryParam("unitType", "US")
                 .when()
@@ -923,7 +956,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("minimumClearance", 1001);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -935,9 +968,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("Minimum Clearance is outside the range value"));
+                .body("errors.defaultMessage", hasItem(ERROR_MIN_CLEARANCE_OUT_OF_RANGE));
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 //.queryParam("unitType", "US")
                 .when()
@@ -950,6 +983,63 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.createUser.userId", equalTo(1))
                 .body("entity.createUser.userName", equalTo("Lego Admin"))
                 //.body("entity.unitType", equalTo("US"))
+                .body("entity.fresnelZoneRadius", equalTo(60.0f))
+                .body("entity.kFactor", equalTo(1.0f))
+                .body("entity.minimumClearance", equalTo(0f))
+                .body("entity.minimumClearanceUS", equalTo(0f))
+                .body("entity.targetAvailability", equalTo(99.995f))
+                .body("entity.showSiteLocationDetails", equalTo(false));
+
+    }
+//TODO UI does not agree with API on US threshold 1001 should be accepted https://www.screencast.com/t/6QzlpNGj
+    @Test
+    public void PutProject_EditUsOutsideBouderyHighMinimumClearance_MinimumClearanceOutOfRange() {
+        Projects projects = new Projects(42, 130, "HighMinimumClearance"+randomNumber3+randomNumber7, "PATH");
+        projectId = given()
+                .contentType(ContentType.JSON)
+                .body(projects)
+                .when()
+                .post("/projects")
+                .then()
+                .statusCode(201)
+                .body("entity.projectName", is(projects.getProjectName()))
+                .body("entity.projectType", equalTo(projects.getProjectType()))
+                .extract()
+                .path("entity.projectId");
+
+        Map<String,String> ProjectMapS = new HashMap<String, String>();
+        Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
+        ProjectMapI.put("minimumClearance", 1001);
+        ProjectMapS.put("unitType", "US");
+
+            given()
+                .contentType(ContentType.JSON)
+                .body(ProjectMapS)
+                .body(ProjectMapI)
+                .pathParam("projectId", projectId)
+                .log().all()
+                .when()
+                .put("/projects/{projectId}")
+                .prettyPeek()
+                .then()
+                .statusCode(400)
+                .statusLine("HTTP/1.1 400 ")
+                .body("error",is("Bad Request"))
+                .body("errors.defaultMessage", hasItem(ERROR_MIN_CLEARANCE_OUT_OF_RANGE));
+
+            given()
+                .pathParam("projectId", projectId)
+                .queryParam("unitType", "US")
+                .when()
+                .get("/projects/{projectId}")
+                .then()
+                .statusCode(200)
+                .statusLine("HTTP/1.1 200 ")
+                .body("entity.projectName", is(projects.getProjectName()))
+                .body("entity.projectType", is(projects.getProjectType()))
+                .body("entity.createUser.userId", equalTo(1))
+                .body("entity.createUser.userName", equalTo("Lego Admin"))
+                .body("entity.unitType", equalTo("US"))
                 .body("entity.fresnelZoneRadius", equalTo(60.0f))
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
@@ -977,7 +1067,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("minimumClearance", 1000);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -989,7 +1079,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ");
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
                 .when()
@@ -1028,7 +1118,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Boolean> ProjectMapI = new HashMap<String, Boolean>();
         ProjectMapI.put("showSiteLocationDetails", false);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1039,10 +1129,10 @@ public class ProjectTest extends RestAssuredConfig {
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
-                .body("message", is("Successfully updated Project"));
+                .body("message", is(PROJECT_SUCCESS_MESSAGE));
 
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
                 .when()
@@ -1081,7 +1171,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Boolean> ProjectMapI = new HashMap<String, Boolean>();
         ProjectMapI.put("showSiteLocationDetails", true);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1092,10 +1182,10 @@ public class ProjectTest extends RestAssuredConfig {
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
-                .body("message", is("Successfully updated Project"));
+                .body("message", is(PROJECT_SUCCESS_MESSAGE));
 
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
                 .when()
@@ -1134,7 +1224,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("targetAvailability", 49);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1146,9 +1236,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("Target Availability is outside the range value"));
+                .body("errors.defaultMessage", hasItem(ERROR_TARGET_AVAILABILITY_OUT_OF_RANGE));
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 //.queryParam("unitType", "US")
                 .when()
@@ -1171,7 +1261,7 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditOutsideBounderyHighTargetAvailabilityPercent_TargetAvailabilityPercentOutOfRangeError() {
-        Projects projects = new Projects(42, 130, "OutsideBounderyHighTarg"+randomNumber4, "PATH");
+        Projects projects = new Projects(42, 130, "OutsideBounderyHighTarg"+randomNumber2, "PATH");
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
@@ -1187,7 +1277,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("targetAvailability", 101);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1199,9 +1289,9 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem("Target Availability is outside the range value"));
+                .body("errors.defaultMessage", hasItem(ERROR_TARGET_AVAILABILITY_OUT_OF_RANGE));
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 //.queryParam("unitType", "US")
                 .when()
@@ -1241,7 +1331,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("targetAvailability", 50);
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1252,11 +1342,11 @@ public class ProjectTest extends RestAssuredConfig {
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
-                .body("message", is("Successfully updated Project"));
+                .body("message", is(PROJECT_SUCCESS_MESSAGE));
 
 
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
                 .when()
@@ -1295,7 +1385,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,String> ProjectMapI = new HashMap<String, String>();
         ProjectMapI.put("unitType", "SI");
 
-        given()
+            given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1306,11 +1396,11 @@ public class ProjectTest extends RestAssuredConfig {
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
-                .body("message", is("Successfully updated Project"));
+                .body("message", is(PROJECT_SUCCESS_MESSAGE));
 
 
 
-        given()
+            given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
                 .when()
