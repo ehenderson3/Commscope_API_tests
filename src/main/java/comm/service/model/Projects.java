@@ -29,6 +29,12 @@ public class Projects {
         this.projectType = projectType;
     };
 
+    public Projects(int createUserId, String projectName, String projectType){
+        this.createUserId = createUserId;
+        this.projectName = projectName;
+        this.projectType = projectType;
+    };
+
     public Projects(String projectName, int fresnelZoneRadius, double kFactor, int i, boolean showSiteLocationDetails, double targetAvailability, String projectType){
         this.projectName = projectName;
         this.projectType = projectType;
