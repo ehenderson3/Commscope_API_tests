@@ -4,15 +4,15 @@ package comm.service.model;
 /**
  * Created by ehend on 2/2/2017.
  */
-public class Licensee {
+public class CompanyModel {
     private String companyName;
     private String contactEmail;
     private String contactName;
     private String licenseeCode;
 
-    public Licensee(){};
+    public CompanyModel(){};
 
-    public Licensee(String companyName, String contactEmail, String licenseeCode, String contactName){
+    public CompanyModel(String companyName, String contactEmail, String licenseeCode, String contactName){
         this.companyName = companyName;
         this.contactEmail = contactEmail;
         this.contactName = contactName;
@@ -20,7 +20,7 @@ public class Licensee {
         //this.licenseeId = licenseeId;
     };
 
-    public Licensee(String companyName, String contactEmail, String licenseeCode){
+    public CompanyModel(String companyName, String contactEmail, String licenseeCode){
         this.companyName = companyName;
         this.contactEmail = contactEmail;
         this.licenseeCode = licenseeCode;
