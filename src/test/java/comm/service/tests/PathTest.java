@@ -440,7 +440,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoLongitudeSegOne_LongitudeCannotBeNull() {
 
-        Projects project = new Projects(32, 1, "NoLongitudeSegOne_ " + randomNumber6, "PATH");
+        Projects project = new Projects(32, 2, "NoLongitudeSegOne_ " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)

@@ -13,7 +13,7 @@ public class Projects {
 
     private String defaultLicensee;
     private int fresnelZoneRadius;
-    private int kFactor;
+    private double kFactor;
     private int minimumClearance;
     private boolean showSiteLocationDetails;
     private double targetAvailability;
@@ -35,7 +35,7 @@ public class Projects {
         this.projectType = projectType;
     };
 
-    public Projects(int defaultCompanyId, int kFactorVal,double targetAvailabilityVal, int fresnelZoneRadiusVal, int  minimumClearanceVal ){
+    public Projects(int defaultCompanyId, double kFactorVal,double targetAvailabilityVal, int fresnelZoneRadiusVal, int  minimumClearanceVal ){
         this.defaultCompanyId = defaultCompanyId;
         this.kFactor = kFactorVal;
         this.targetAvailability = targetAvailabilityVal;
@@ -45,7 +45,7 @@ public class Projects {
 
     };
 
-    public Projects(int defaultCompanyId, int kFactorVal,double targetAvailabilityVal, int fresnelZoneRadiusVal, int  minimumClearanceVal, boolean showSiteLocationDetailsVal ){
+    public Projects(int defaultCompanyId, double kFactorVal,double targetAvailabilityVal, int fresnelZoneRadiusVal, int  minimumClearanceVal, boolean showSiteLocationDetailsVal ){
         this.defaultCompanyId = defaultCompanyId;
         this.kFactor = kFactorVal;
         this.targetAvailability = targetAvailabilityVal;
@@ -87,10 +87,10 @@ public class Projects {
         this.fresnelZoneRadius = fresnelZoneRadiusVal;
     }
 
-    public int getKFactor(){
+    public double getKFactor(){
         return kFactor;
     }
-    public void setKFactor(int kFactorVal){
+    public void setKFactor(double kFactorVal){
         this.kFactor = kFactorVal;
     }
 

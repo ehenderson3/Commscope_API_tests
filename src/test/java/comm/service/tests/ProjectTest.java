@@ -181,7 +181,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void GetProject_ValidProject_DefaultGlobalValuesSet() {
 
-        Projects project = new Projects(2,3, "ValidProject "+randomNumber2, "PATH");
+        Projects project = new Projects(47,5, "ValidProject "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -749,14 +749,14 @@ public class ProjectTest extends RestAssuredConfig {
                 .path("entity.projectId");
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         Map<String,Double> ProjectMapD = new HashMap<String, Double>();
-        ProjectMapI.put("kFactor", -1);
-        ProjectMapI.put("defaultCompanyId", 4);
+        ProjectMapD.put("kFactor", -.001);
+        ProjectMapD.put("defaultCompanyId", 4.);
 
             given()
                 .contentType(ContentType.JSON)
                 .pathParam("projectId", projectId)
                 .log().all()
-                    .body(ProjectMapI)
+                    .body(ProjectMapD)
                 .when()
                 .put("/projects/{projectId}")
                 .prettyPeek()
@@ -805,14 +805,14 @@ public class ProjectTest extends RestAssuredConfig {
                 .extract()
                 .path("entity.projectId");
 
-        //Projects projectUpdate = new Projects(4, -8,99.993f,3,3,true);
-        Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
-        ProjectMapI.put("kFactor",-33);
-        ProjectMapI.put("defaultCompanyId", 4);
+        //TODO find a cleaner way to update kFactor
+        Map<String,Double> ProjectMapD = new HashMap<String, Double>();
+        ProjectMapD.put("kFactor",-33.0);
+        ProjectMapD.put("defaultCompanyId", 4.);
 
         given()
                 .contentType(ContentType.JSON)
-                .body(ProjectMapI)
+                .body(ProjectMapD)
                 .pathParam("projectId", projectId)
                 .log().all()
                 .when()
@@ -900,8 +900,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     }
 
-
-
     @Test
     public void PutProject_EditMinimumClearanceToNegative1000_MinimumClearanceOutOfRangeError() {
 
@@ -956,7 +954,6 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.minimumClearanceUS", equalTo(0f))
                 .body("entity.targetAvailability", equalTo(99.995f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
-
     }
 
     @Test
@@ -1016,7 +1013,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
-//TODO UI does not agree with API on US threshold 1001 should be accepted https://www.screencast.com/t/6QzlpNGj
+    //TODO UI does not agree with API on US threshold 1001 should be accepted https://www.screencast.com/t/6QzlpNGj
     @Test
     public void PutProject_EditUsOutsideBouderyHighMinimumClearance_MinimumClearanceOutOfRange() {
         Projects project = new Projects(10,2, "EditUsOutsideBouderyH "+randomNumber2, "PATH");
