@@ -31,7 +31,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_ValidPaths_PathSaves() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "stPath_ValidPa " + randomNumber6, "PATH");
+        Projects project = new Projects(44, 2, "stPath_ValidPa " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -93,7 +93,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void GetPath_ValidPaths_PathSaves() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "RequiredProjectInput " + randomNumber6, "PATH");
+        Projects project = new Projects(32, 5, "RequiredProjectInput " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -182,7 +182,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoElevationSegOne_GroundElevationCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "_NoElevationSegOne " + randomNumber6, "PATH");
+        Projects project = new Projects(14, 4, "_NoElevationSegOne " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -247,7 +247,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoElevationSegTwo_GroundElevationCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "NoElevationSegTwo_ " + randomNumber6, "PATH");
+        Projects project = new Projects(14, 2, "NoElevationSegTwo_ " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -312,7 +312,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoLatitudeSegOne_LatitudeCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "_NoLatitudeSegOne " + randomNumber6, "PATH");
+        Projects project = new Projects(12, 2, "_NoLatitudeSegOne " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -377,7 +377,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoLatitudeSegTwo_LatitudeCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "NoLatitudeSegTwo " + randomNumber6, "PATH");
+        Projects project = new Projects(21, 5, "NoLatitudeSegTwo " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -440,7 +440,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoLongitudeSegOne_LongitudeCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "NoLongitudeSegOne_ " + randomNumber6, "PATH");
+        Projects project = new Projects(32, 2, "NoLongitudeSegOne_ " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -505,7 +505,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoLongitudeSegTwo_LongitudeCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "NoLongitudeSegTwo_ " + randomNumber6, "PATH");
+        Projects project = new Projects(23, 2, "NoLongitudeSegTwo_ " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -570,7 +570,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoSiteNameSegOne_SiteNameCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "NoSiteNameSegOne " + randomNumber6, "PATH");
+        Projects project = new Projects(22, 3, "NoSiteNameSegOne " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -635,7 +635,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_NoSiteNameSegTwo_SiteNameCannotBeNull() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "_NoSiteNameSegTwo " + randomNumber6, "PATH");
+        Projects project = new Projects(18, 4, "_NoSiteNameSegTwo " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -701,7 +701,7 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void DeletePath_ValidPaths_DeletePath() {
 
-        Projects project = new Projects(licenseeId, licenseeId, "DeletePath_ " + randomNumber6, "PATH");
+        Projects project = new Projects(17, 4, "DeletePath_ " + randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)

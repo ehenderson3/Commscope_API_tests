@@ -58,8 +58,8 @@ public class ProjectTest extends RestAssuredConfig {
     @DataProvider(name = "Unique Project Name Test Data")
     public Object[][] createProjectQueryData() {
         return new Object[][]{
-                {new Projects(331,  "Kingston11", "PATH")},
-                {new Projects(381,  "Kingston11", "PATH")},
+                {new Projects(331, 4, "Kingston11", "PATH")},
+                {new Projects(381, 5, "Kingston11", "PATH")},
         };
     }
 
@@ -95,7 +95,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PostProject_ValidRequiredProjectInput_ProjectRecordIsCreated201() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "RequiredProjectInput "+randomNumber2, "PATH");
+        Projects project = new Projects(1,1, "RequiredProjectInput "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -115,13 +115,14 @@ public class ProjectTest extends RestAssuredConfig {
     @Test//( dataProvider = "Default Project2")
     public void GetProject_ValidExistingProjectRecord_ProjectRecordIsCLocated200() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "ExistingProjectRecord "+randomNumber2, "PATH");
+        Projects project = new Projects(1,1, "ExistingProjectRecord "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(project)
                 .when()
                 .post("/projects")
+                .prettyPeek()
                 .then()
                 .statusCode(201)
                 .statusLine("HTTP/1.1 201 ")
@@ -163,7 +164,7 @@ public class ProjectTest extends RestAssuredConfig {
     public void PostProject_ProjectNameNotUnique_SC_CONFLICT(Projects projects) {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
-        ProjectMapI.put("defaultLicenseeId",5);
+        ProjectMapI.put("defaultCompanyId",5);
 
             given()
                 .contentType(ContentType.JSON)
@@ -180,7 +181,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void GetProject_ValidProject_DefaultGlobalValuesSet() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "ValidProject "+randomNumber2, "PATH");
+        Projects project = new Projects(47,5, "ValidProject "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -221,7 +222,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void GetProject_ValidProject_DefaultGlobalValue() {
 
-        Projects project = new Projects(5,licenseeId, "ValidProject2 "+randomNumber2, "PATH");
+        Projects project = new Projects(1,3, "ValidProject2 "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -262,7 +263,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditDefaultToValidFresnelZoneRadius_NewFresnelZoneRadiusSaved() {
 
-        Projects project = new Projects(5,licenseeId, "ValidProject "+randomNumber4, "PATH");
+        Projects project = new Projects(12,3, "ValidProject "+randomNumber4, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -278,6 +279,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("fresnelZoneRadius",33);
+        ProjectMapI.put("defaultCompanyId", 4);
 
                 given()
                 .contentType(ContentType.JSON)
@@ -318,7 +320,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditAlphaTarget_targetAvailabilityUnrecognizedToken() {
 
-        Projects project = new Projects(5,licenseeId, "EditAlphaTarget "+randomNumber6, "PATH");
+        Projects project = new Projects(5,5, "EditAlphaTarget "+randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -392,7 +394,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditMinimumClearanceWithIllegalAlpha_UnrecognizedToken400() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "ClearanceWithIllegalAlpha "+randomNumber2, "PATH");
+        Projects project = new Projects(15,4, "ClearanceWithIllegalAlpha "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -451,7 +453,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditMinimumClearanceWithAtSymbol_UnrecognizedToken400() {
 
-        Projects project = new Projects(5,licenseeId, "ClearanceWithAtSymbol "+randomNumber2, "PATH");
+        Projects project = new Projects(66,5, "ClearanceWithAtSymbol "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -509,7 +511,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditAlphaFresnelZoneRadius_FresnelUnrecognizedToken() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "FresnelZoneRadius "+randomNumber2, "PATH");
+        Projects project = new Projects(22,3, "FresnelZoneRadius "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -567,7 +569,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditDefaultAlphaKFactor_KFactorUnrecognizedToken() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "DefaultAlphaKFactor "+randomNumber2, "PATH");
+        Projects project = new Projects(17,2, "DefaultAlphaKFactor "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -623,7 +625,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditOutsideBouderyHighFresnelZoneRadius_NewFresnelOutOfRangeError() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "BouderyHighFresnelZoneRadius "+randomNumber2, "PATH");
+        Projects project = new Projects(114,3, "BouderyHighFresnelZoneRadius "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -639,6 +641,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("fresnelZoneRadius",1001);
+        ProjectMapI.put("defaultCompanyId", 3);
 
             given()
                 .contentType(ContentType.JSON)
@@ -676,7 +679,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditFresnelZoneRadiusToNegativeOne_NewFresnelOutOfRangeError() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "BouderyHighFresnelZ "+randomNumber2, "PATH");
+        Projects project = new Projects(12,2, "BouderyHighFresnelZ "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -691,6 +694,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .path("entity.projectId");
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
+        ProjectMapI.put("defaultCompanyId", 4);
         ProjectMapI.put("fresnelZoneRadius", -1);
 
             given()
@@ -730,7 +734,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditKFactorTo001_KFactorOutOfRangeError() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditKFactorTo001 "+randomNumber2, "PATH");
+        Projects project = new Projects(71,3, "EditKFactorTo001 "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -743,15 +747,16 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.projectType", equalTo(project.getProjectType()))
                 .extract()
                 .path("entity.projectId");
-
+        Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         Map<String,Double> ProjectMapD = new HashMap<String, Double>();
-        ProjectMapD.put("kFactor", -1.0);
+        ProjectMapD.put("kFactor", -.001);
+        ProjectMapD.put("defaultCompanyId", 4.);
 
             given()
                 .contentType(ContentType.JSON)
-                .body(ProjectMapD)
                 .pathParam("projectId", projectId)
                 .log().all()
+                    .body(ProjectMapD)
                 .when()
                 .put("/projects/{projectId}")
                 .prettyPeek()
@@ -786,7 +791,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditKFactorToPoint001_KFactorOutOfRangeError() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditKFactorTo0012 "+randomNumber2, "PATH");
+        Projects project = new Projects(41,5, "EditKFactorTo0012 "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -800,10 +805,12 @@ public class ProjectTest extends RestAssuredConfig {
                 .extract()
                 .path("entity.projectId");
 
+        //TODO find a cleaner way to update kFactor
         Map<String,Double> ProjectMapD = new HashMap<String, Double>();
-        ProjectMapD.put("kFactor", 0.001);
+        ProjectMapD.put("kFactor",-33.0);
+        ProjectMapD.put("defaultCompanyId", 4.);
 
-            given()
+        given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapD)
                 .pathParam("projectId", projectId)
@@ -815,34 +822,34 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("errors.defaultMessage", hasItem(ERROR_K_FACTOR_INVALID));
+                .body("errors.defaultMessage", hasItem(ERROR_K_FACTOR_OUT_OF_RANGE));
 
-            given()
-                .pathParam("projectId", projectId)
-                //.queryParam("unitType", "US")
-                .when()
-                .get("/projects/{projectId}")
-                .then()
-                .statusCode(200)
-                .statusLine("HTTP/1.1 200 ")
-                .body("entity.projectName", is(project.getProjectName()))
-                .body("entity.projectType", is(project.getProjectType()))
-                .body("entity.createUser.userId", equalTo(1))
-                .body("entity.createUser.userName", equalTo("Lego Admin"))
-                //.body("entity.unitType", equalTo("US"))
-                .body("entity.fresnelZoneRadius", equalTo(60.0f))
-                .body("entity.kFactor", equalTo(1.0f))
-                .body("entity.minimumClearance", equalTo(0f))
-                .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.995f))
-                .body("entity.showSiteLocationDetails", equalTo(false));
+//            given()
+//                .pathParam("projectId", projectId)
+//                //.queryParam("unitType", "US")
+//                .when()
+//                .get("/projects/{projectId}")
+//                .then()
+//                .statusCode(200)
+//                .statusLine("HTTP/1.1 200 ")
+//                .body("entity.projectName", is(project.getProjectName()))
+//                .body("entity.projectType", is(project.getProjectType()))
+//                .body("entity.createUser.userId", equalTo(1))
+//                .body("entity.createUser.userName", equalTo("Lego Admin"))
+//                //.body("entity.unitType", equalTo("US"))
+//                .body("entity.fresnelZoneRadius", equalTo(60.0f))
+//                .body("entity.kFactor", equalTo(1.0f))
+//                .body("entity.minimumClearance", equalTo(0f))
+//                .body("entity.minimumClearanceUS", equalTo(0f))
+//                .body("entity.targetAvailability", equalTo(99.995f))
+//                .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
 
     @Test
     public void PutProject_EditKFactorTo20_KFactorEditSaved() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditKFactorTo20_ "+randomNumber2, "PATH");
+        Projects project = new Projects(12,2, "EditKFactorTo20_ "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -857,6 +864,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .path("entity.projectId");
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
+        ProjectMapI.put("defaultCompanyId", 3);
         ProjectMapI.put("kFactor", 20);
 
             given()
@@ -892,12 +900,10 @@ public class ProjectTest extends RestAssuredConfig {
 
     }
 
-
-
     @Test
     public void PutProject_EditMinimumClearanceToNegative1000_MinimumClearanceOutOfRangeError() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditMinimumClearance "+randomNumber2, "PATH");
+        Projects project = new Projects(17,4, "EditMinimumClearance "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -913,6 +919,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("minimumClearance", -1001);
+        ProjectMapI.put("defaultCompanyId", 3);
 
             given()
                 .contentType(ContentType.JSON)
@@ -947,13 +954,12 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.minimumClearanceUS", equalTo(0f))
                 .body("entity.targetAvailability", equalTo(99.995f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
-
     }
 
     @Test
     public void PutProject_EditOutsideBouderyHighMinimumClearance_MinimumClearanceOutOfRange() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "BouderyHighMinimumCle "+randomNumber2, "PATH");
+        Projects project = new Projects(47,2, "BouderyHighMinimumCle "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -969,8 +975,10 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("minimumClearance", 1001);
+        ProjectMapI.put("defaultCompanyId", 3);
 
-            given()
+
+        given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1005,10 +1013,10 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
-//TODO UI does not agree with API on US threshold 1001 should be accepted https://www.screencast.com/t/6QzlpNGj
+    //TODO UI does not agree with API on US threshold 1001 should be accepted https://www.screencast.com/t/6QzlpNGj
     @Test
     public void PutProject_EditUsOutsideBouderyHighMinimumClearance_MinimumClearanceOutOfRange() {
-        Projects project = new Projects(licenseeId,licenseeId, "EditUsOutsideBouderyH "+randomNumber2, "PATH");
+        Projects project = new Projects(10,2, "EditUsOutsideBouderyH "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -1025,7 +1033,7 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,String> ProjectMapS = new HashMap<String, String>();
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("minimumClearance", 1001);
-        ProjectMapS.put("unitType", "US");
+        ProjectMapI.put("defaultCompanyId", 2);
 
             given()
                 .contentType(ContentType.JSON)
@@ -1067,7 +1075,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditWithInBouderyMinimumClearance_MinimumClearanceSaved() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditWithInBouderyMinim "+randomNumber2, "PATH");
+        Projects project = new Projects(85,4, "EditWithInBouderyMinim "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -1083,6 +1091,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("minimumClearance", 1000);
+        ProjectMapI.put("defaultCompanyId", 4);
 
             given()
                 .contentType(ContentType.JSON)
@@ -1120,7 +1129,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditShowSiteFalseLocationDetails_ShowSiteLocationDetailsSaved() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditShowSiteFalse "+randomNumber2, "PATH");
+        Projects project = new Projects(688,5, "EditShowSiteFalse "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -1137,7 +1146,8 @@ public class ProjectTest extends RestAssuredConfig {
         Map<String,Boolean> ProjectMapI = new HashMap<String, Boolean>();
         ProjectMapI.put("showSiteLocationDetails", false);
 
-            given()
+
+        given()
                 .contentType(ContentType.JSON)
                 .body(ProjectMapI)
                 .pathParam("projectId", projectId)
@@ -1175,7 +1185,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditShowSiteTrueLocationDetails_ShowSiteLocationDetailsSaved() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditShowSiteTrueL "+randomNumber2, "PATH");
+        Projects project = new Projects(58,4, "EditShowSiteTrueL "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -1191,10 +1201,11 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Boolean> ProjectMapI = new HashMap<String, Boolean>();
         ProjectMapI.put("showSiteLocationDetails", true);
+        Projects projectUpdate = new Projects(4, -8,99.995f,1,2,true);
 
             given()
                 .contentType(ContentType.JSON)
-                .body(ProjectMapI)
+                .body(projectUpdate)
                 .pathParam("projectId", projectId)
                 .log().all()
                 .when()
@@ -1219,10 +1230,10 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.createUser.userId", equalTo(1))
                 .body("entity.createUser.userName", equalTo("Lego Admin"))
                 .body("entity.unitType", equalTo("US"))
-                .body("entity.fresnelZoneRadius", equalTo(60.0f))
+                .body("entity.fresnelZoneRadius", equalTo(1.0f))
                 .body("entity.kFactor", equalTo(1.0f))
-                .body("entity.minimumClearance", equalTo(0f))
-                .body("entity.minimumClearanceUS", equalTo(0f))
+                .body("entity.minimumClearance", equalTo(2.0f))
+                .body("entity.minimumClearanceUS", equalTo(6.56f))
                 .body("entity.targetAvailability", equalTo(99.995f))
                 .body("entity.showSiteLocationDetails", equalTo(true));
 
@@ -1230,7 +1241,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditOutsideBounderyLowTargetAvailabilityPercent_TargetAvailabilityPercentOutOfRangeError() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditOutsideBounderyL3 "+randomNumber2, "PATH");
+        Projects project = new Projects(75,1, "EditOutsideBounderyL3 "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -1246,6 +1257,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("targetAvailability", 49);
+        ProjectMapI.put("defaultCompanyId", 4);
 
             given()
                 .contentType(ContentType.JSON)
@@ -1282,7 +1294,7 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditOutsideBounderyHighTargetAvailabilityPercent_TargetAvailabilityPercentOutOfRangeError() {
-        Projects project = new Projects(licenseeId,licenseeId, "EditOutsideBounderyL "+randomNumber2, "PATH");
+        Projects project = new Projects(98,5, "EditOutsideBounderyL "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -1298,6 +1310,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("targetAvailability", 101);
+        ProjectMapI.put("defaultCompanyId", 3);
 
             given()
                 .contentType(ContentType.JSON)
@@ -1335,7 +1348,7 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditWithInBounderyTargetAvailabilityPercent_TargetAvailabilityPercentSaved() {
-        Projects projects = new Projects(42, 130, "InBounderyTargetAvailABCD"+randomNumber6, "PATH");
+        Projects projects = new Projects(42, 4, "InBounderyTargetAvailABCD"+randomNumber6, "PATH");
         projectId = given()
                 .contentType(ContentType.JSON)
                 .body(projects)
@@ -1350,6 +1363,8 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
         ProjectMapI.put("targetAvailability", 50);
+        ProjectMapI.put("defaultCompanyId", 4);
+
 
             given()
                 .contentType(ContentType.JSON)
@@ -1390,7 +1405,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditWithUnitType_UnitTypeSaved() {
 
-        Projects project = new Projects(licenseeId,licenseeId, "PutProject_EditWithUnit "+randomNumber2, "PATH");
+        Projects project = new Projects(223,5, "PutProject_EditWithUnit "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -1406,6 +1421,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,String> ProjectMapI = new HashMap<String, String>();
         ProjectMapI.put("unitType", "SI");
+        ProjectMapI.put("defaultCompanyId", "3");
 
             given()
                 .contentType(ContentType.JSON)
@@ -1414,6 +1430,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .log().all()
                 .when()
                 .put("/projects/{projectId}")
+                    .prettyPeek()
                 .prettyPeek()
                 .then()
                 .statusCode(200)

@@ -5,7 +5,7 @@ package comm.service.model;
  */
 public class Projects {
     private int createUserId;
-    private int defaultLicenseeId;
+    private int defaultCompanyId;
     private String projectName;
     private String projectType;
 
@@ -14,7 +14,7 @@ public class Projects {
     private String defaultLicensee;
     private int fresnelZoneRadius;
     private double kFactor;
-    private String minimumClearance;
+    private int minimumClearance;
     private boolean showSiteLocationDetails;
     private double targetAvailability;
     private String unitType;
@@ -22,9 +22,9 @@ public class Projects {
 
     public Projects(){};
 
-    public Projects(int createUserId, int defaultLicensee, String projectName, String projectType){
+    public Projects(int createUserId, int defaultCompanyId, String projectName, String projectType){
         this.createUserId = createUserId;
-        this.defaultLicenseeId = defaultLicensee;
+        this.defaultCompanyId = defaultCompanyId;
         this.projectName = projectName;
         this.projectType = projectType;
     };
@@ -35,14 +35,28 @@ public class Projects {
         this.projectType = projectType;
     };
 
-    public Projects(String projectName, int fresnelZoneRadius, double kFactor, int i, boolean showSiteLocationDetails, double targetAvailability, String projectType){
-        this.projectName = projectName;
-        this.projectType = projectType;
+    public Projects(int defaultCompanyId, double kFactorVal,double targetAvailabilityVal, int fresnelZoneRadiusVal, int  minimumClearanceVal ){
+        this.defaultCompanyId = defaultCompanyId;
+        this.kFactor = kFactorVal;
+        this.targetAvailability = targetAvailabilityVal;
+        this.fresnelZoneRadius = fresnelZoneRadiusVal;
+        this.minimumClearance = minimumClearanceVal;
+
+
     };
 
+    public Projects(int defaultCompanyId, double kFactorVal,double targetAvailabilityVal, int fresnelZoneRadiusVal, int  minimumClearanceVal, boolean showSiteLocationDetailsVal ){
+        this.defaultCompanyId = defaultCompanyId;
+        this.kFactor = kFactorVal;
+        this.targetAvailability = targetAvailabilityVal;
+        this.fresnelZoneRadius = fresnelZoneRadiusVal;
+        this.minimumClearance = minimumClearanceVal;
+        this.showSiteLocationDetails = showSiteLocationDetailsVal;
 
-    public Projects(String defaultLicenseeVal, int fresnelZoneRadiusVal, double kFactorVal, String minimumClearanceVal, boolean showSiteLocationDetailsVal,double targetAvailabilityVal, String unitTypeVal ){
-        this.defaultLicensee = defaultLicenseeVal;
+
+    };
+    public Projects(int defaultCompanyIdVal, int fresnelZoneRadiusVal, int kFactorVal, int minimumClearanceVal, boolean showSiteLocationDetailsVal,double targetAvailabilityVal, String unitTypeVal ){
+        this.defaultCompanyId = defaultCompanyIdVal;
         this.fresnelZoneRadius = fresnelZoneRadiusVal;
         this.kFactor = kFactorVal;
         this.minimumClearance = minimumClearanceVal;
@@ -59,11 +73,11 @@ public class Projects {
         this.unitType = unitTypeVal;
     };
 
-    public String getDefaultLicensee(){
-        return defaultLicensee;
+    public int getDefaultCompanyId(){
+        return defaultCompanyId;
     }
-    public void setDefaultLicensee(String defaultLicenseeVal){
-        this.defaultLicensee = defaultLicenseeVal;
+    public void setDefaultLicensee(int defaultCompanyIdVal){
+        this.defaultCompanyId = defaultCompanyIdVal;
     }
 
     public int getFresnelZoneRadius(){
@@ -80,10 +94,10 @@ public class Projects {
         this.kFactor = kFactorVal;
     }
 
-    public String getMinimumClearance(){
+    public int getMinimumClearance(){
         return minimumClearance;
     }
-    public void setMinimumClearance(String minimumClearanceVal){
+    public void setMinimumClearance(int minimumClearanceVal){
         this.minimumClearance = minimumClearanceVal;
     }
 
@@ -116,13 +130,13 @@ public class Projects {
         this.createUserId = createUserId;
     }
 
-    public int getDefaultLicenseeId(){
-        return defaultLicenseeId;
-    }
-
-    public void setDefaultLicenseeId(int defaultLicenseeId){
-        this.defaultLicenseeId = defaultLicenseeId;
-    }
+//    public int getDefaultLicenseeId(){
+//        return defaultCompanyId;
+//    }
+//
+//    public void setDefaultLicenseeId(int defaultLicenseeId){
+//        this.defaultCompanyId = defaultLicenseeId;
+//    }
 
     public String getProjectName(){
         return projectName;

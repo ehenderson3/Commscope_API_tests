@@ -1,14 +1,8 @@
 package comm.service.tests;
 
-import com.jayway.restassured.http.ContentType;
-import comm.service.model.Licensee;
-import comm.service.model.Projects;
 import comm.service.model.RestAssuredConfig;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import static com.jayway.restassured.RestAssured.given;

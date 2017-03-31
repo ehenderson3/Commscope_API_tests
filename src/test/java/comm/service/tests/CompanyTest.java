@@ -128,7 +128,7 @@ public class CompanyTest extends RestAssuredConfig{
     }
 
     @Test()
-    public void GetCompanies_FindCompanyThatDoesNotExist_Returns200StatusCode() {
+    public void GetCompanies_FindCompanyThatDoesNotExist_Returns404StatusCode() {
         given()
                 .pathParam("companyId", 69854)
                 .contentType(ContentType.JSON)
@@ -137,6 +137,7 @@ public class CompanyTest extends RestAssuredConfig{
                 .prettyPeek()
                 .then()
                 .statusLine("HTTP/1.1 404 ")
+                .body("message" ,is("Company 69854 not found"))
 ;
     }
 
