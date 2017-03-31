@@ -1,7 +1,7 @@
 package comm.service.tests;
 
 import com.jayway.restassured.http.ContentType;
-import comm.service.model.Licensee;
+import comm.service.model.CompanyModel;
 import comm.service.model.Projects;
 import comm.service.model.RestAssuredConfig;
 import org.testng.annotations.DataProvider;
@@ -29,7 +29,7 @@ public class ProjectTest extends RestAssuredConfig {
     @DataProvider(name = "Default Licensee")
     public Object[][] createLicData() {
         return new Object[][]{
-                {new Licensee("Official Company"+ randomNumber1, "enrique@surgeforwoard.com", "34iij4j4u", "PATH")},
+                {new CompanyModel("Official Company"+ randomNumber1, "enrique@surgeforwoard.com", "34iij4j4u", "PATH")},
         };
 
     }
@@ -91,43 +91,9 @@ public class ProjectTest extends RestAssuredConfig {
     int licenseeId = 0;
     int projectId = 0;
 
-    @Test(dataProvider = "Default Licensee")
-    public void PostLicensee_ValidRequiredLiceseeInput_LicenseeRecordIsCreated201(Licensee licensee) {
-
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-    }
 
     @Test
     public void PostProject_ValidRequiredProjectInput_ProjectRecordIsCreated201() {
-        Licensee licensee = new Licensee("RequiredProjectInput", "RequiredProjectInput@uKnow.com", "RequiredProjectInput Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId,licenseeId, "RequiredProjectInput "+randomNumber2, "PATH");
 
@@ -148,22 +114,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test//( dataProvider = "Default Project2")
     public void GetProject_ValidExistingProjectRecord_ProjectRecordIsCLocated200() {
-
-        Licensee licensee = new Licensee("ExistingProjectRecord", "ExistingProjectRecord@uKnow.com", "ExistingProjectRecord Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "ExistingProjectRecord "+randomNumber2, "PATH");
 
@@ -211,25 +161,9 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test(dataProvider = "Unique Project Name Test Data")
     public void PostProject_ProjectNameNotUnique_SC_CONFLICT(Projects projects) {
-        Licensee licensee = new Licensee("Unique", "Unique@uKnow.com", "Unique Co", "PATH");
-
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
-        ProjectMapI.put("defaultLicenseeId",licenseeId);
+        ProjectMapI.put("defaultLicenseeId",5);
 
             given()
                 .contentType(ContentType.JSON)
@@ -239,28 +173,12 @@ public class ProjectTest extends RestAssuredConfig {
                 .post("/projects")
                 .prettyPeek()
                 .then()
-                .statusLine("HTTP/1.1 412 ")
+                .statusLine("HTTP/1.1 409 ")
                 .body("message", is("Duplicate Constraint Error.  Error creating project"));
     }
 
-    @Test//( dataProvider = "DefaultGetProjectData")
+    @Test
     public void GetProject_ValidProject_DefaultGlobalValuesSet() {
-
-        Licensee licensee = new Licensee("ValidProject", "ValidProject@uKnow.com", "ValidProject Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "ValidProject "+randomNumber2, "PATH");
 
@@ -302,23 +220,8 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void GetProject_ValidProject_DefaultGlobalValue() {
-        Licensee licensee = new Licensee("ValidProject2", "ValidProject2@uKnow.com", "ValidProject2 Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
-        Projects project = new Projects(licenseeId,licenseeId, "ValidProject2 "+randomNumber2, "PATH");
+        Projects project = new Projects(5,licenseeId, "ValidProject2 "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -358,23 +261,8 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditDefaultToValidFresnelZoneRadius_NewFresnelZoneRadiusSaved() {
-        Licensee licensee = new Licensee("ValidProject", "ValidProject@uKnow.com", "ValidProject Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
-        Projects project = new Projects(licenseeId,licenseeId, "ValidProject "+randomNumber4, "PATH");
+        Projects project = new Projects(5,licenseeId, "ValidProject "+randomNumber4, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -429,23 +317,8 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditAlphaTarget_targetAvailabilityUnrecognizedToken() {
-        Licensee licensee = new Licensee("EditAlphaTarget", "EditAlphaTarget@uKnow.com", "EditAlphaTarget Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
-        Projects project = new Projects(licenseeId,licenseeId, "EditAlphaTarget "+randomNumber6, "PATH");
+        Projects project = new Projects(5,licenseeId, "EditAlphaTarget "+randomNumber6, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -518,21 +391,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditMinimumClearanceWithIllegalAlpha_UnrecognizedToken400() {
-        Licensee licensee = new Licensee("ClearanceWithIllegalAlpha", "ClearanceWithIllegalAlpha@uKnow.com", "ClearanceWithIllegalAlpha Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "ClearanceWithIllegalAlpha "+randomNumber2, "PATH");
 
@@ -592,23 +450,8 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditMinimumClearanceWithAtSymbol_UnrecognizedToken400() {
-        Licensee licensee = new Licensee("ClearanceWithAtSymbol", "ClearanceWithAtSymbol@uKnow.com", "ClearanceWithAtSymbol Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
-        Projects project = new Projects(licenseeId,licenseeId, "ClearanceWithAtSymbol "+randomNumber2, "PATH");
+        Projects project = new Projects(5,licenseeId, "ClearanceWithAtSymbol "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -665,21 +508,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditAlphaFresnelZoneRadius_FresnelUnrecognizedToken() {
-        Licensee licensee = new Licensee("FresnelZoneRadius", "FresnelZoneRadius@uKnow.com", "FresnelZoneRadius Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "FresnelZoneRadius "+randomNumber2, "PATH");
 
@@ -738,21 +566,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditDefaultAlphaKFactor_KFactorUnrecognizedToken() {
-        Licensee licensee = new Licensee("DefaultAlphaKFactor", "DefaultAlphaKFactor@uKnow.com", "DefaultAlphaKFactor Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "DefaultAlphaKFactor "+randomNumber2, "PATH");
 
@@ -809,21 +622,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditOutsideBouderyHighFresnelZoneRadius_NewFresnelOutOfRangeError() {
-        Licensee licensee = new Licensee("BouderyHighFresnelZoneRadius", "BouderyHighFresnelZoneRadius@uKnow.com", "BouderyHighFresnelZoneRadius Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "BouderyHighFresnelZoneRadius "+randomNumber2, "PATH");
 
@@ -877,21 +675,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditFresnelZoneRadiusToNegativeOne_NewFresnelOutOfRangeError() {
-        Licensee licensee = new Licensee("BouderyHighFresnelZoneRadius", "BouderyHighFresnelZoneRadius@uKnow.com", "BouderyHighFresnelZoneRadius Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "BouderyHighFresnelZ "+randomNumber2, "PATH");
 
@@ -946,21 +729,6 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditKFactorTo001_KFactorOutOfRangeError() {
-        Licensee licensee = new Licensee("EditKFactorTo001", "EditKFactorTo001@uKnow.com", "EditKFactorTo001 Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditKFactorTo001 "+randomNumber2, "PATH");
 
@@ -1017,21 +785,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditKFactorToPoint001_KFactorOutOfRangeError() {
-        Licensee licensee = new Licensee("EditKFactorTo0012", "EditKFactorTo001@uKnow.com", "EditKFactorTo0012 Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditKFactorTo0012 "+randomNumber2, "PATH");
 
@@ -1088,21 +841,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditKFactorTo20_KFactorEditSaved() {
-        Licensee licensee = new Licensee("EditKFactorTo20_", "EditKFactorTo20_@uKnow.com", "EditKFactorTo20_ Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditKFactorTo20_ "+randomNumber2, "PATH");
 
@@ -1158,21 +896,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditMinimumClearanceToNegative1000_MinimumClearanceOutOfRangeError() {
-        Licensee licensee = new Licensee("EditMinimumClearance", "EditMinimumClearance@uKnow.com", "EditMinimumClearance Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditMinimumClearance "+randomNumber2, "PATH");
 
@@ -1229,21 +952,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditOutsideBouderyHighMinimumClearance_MinimumClearanceOutOfRange() {
-        Licensee licensee = new Licensee("BouderyHighMinimumCle", "BouderyHighMinimumCle@uKnow.com", "BouderyHighMinimumCle Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "BouderyHighMinimumCle "+randomNumber2, "PATH");
 
@@ -1300,22 +1008,6 @@ public class ProjectTest extends RestAssuredConfig {
 //TODO UI does not agree with API on US threshold 1001 should be accepted https://www.screencast.com/t/6QzlpNGj
     @Test
     public void PutProject_EditUsOutsideBouderyHighMinimumClearance_MinimumClearanceOutOfRange() {
-        Licensee licensee = new Licensee("EditUsOutsideBouderyH", "EditUsOutsideBouderyH@uKnow.com", "EditUsOutsideBouderyH Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
         Projects project = new Projects(licenseeId,licenseeId, "EditUsOutsideBouderyH "+randomNumber2, "PATH");
 
         projectId = given()
@@ -1374,21 +1066,6 @@ public class ProjectTest extends RestAssuredConfig {
 
     @Test
     public void PutProject_EditWithInBouderyMinimumClearance_MinimumClearanceSaved() {
-        Licensee licensee = new Licensee("EditWithInBouderyMinim", "EditWithInBouderyMinim@uKnow.com", "EditWithInBouderyMinim Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditWithInBouderyMinim "+randomNumber2, "PATH");
 
@@ -1442,21 +1119,6 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditShowSiteFalseLocationDetails_ShowSiteLocationDetailsSaved() {
-        Licensee licensee = new Licensee("EditShowSiteFalse", "EditShowSiteFalse@uKnow.com", "EditShowSiteFalse Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditShowSiteFalse "+randomNumber2, "PATH");
 
@@ -1512,21 +1174,6 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditShowSiteTrueLocationDetails_ShowSiteLocationDetailsSaved() {
-        Licensee licensee = new Licensee("EditShowSiteTrueL", "EditShowSiteTrueL@uKnow.com", "EditShowSiteTrueL Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditShowSiteTrueL "+randomNumber2, "PATH");
 
@@ -1582,21 +1229,6 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditOutsideBounderyLowTargetAvailabilityPercent_TargetAvailabilityPercentOutOfRangeError() {
-        Licensee licensee = new Licensee("EditOutsideBounderyL", "EditOutsideBounderyL@uKnow.com", "EditOutsideBounderyL Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "EditOutsideBounderyL3 "+randomNumber2, "PATH");
 
@@ -1650,22 +1282,6 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditOutsideBounderyHighTargetAvailabilityPercent_TargetAvailabilityPercentOutOfRangeError() {
-        Licensee licensee = new Licensee("OutsideBounderyHig", "OutsideBounderyHig@uKnow.com", "OutsideBounderyHig Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
         Projects project = new Projects(licenseeId,licenseeId, "EditOutsideBounderyL "+randomNumber2, "PATH");
 
         projectId = given()
@@ -1773,21 +1389,6 @@ public class ProjectTest extends RestAssuredConfig {
     }
     @Test
     public void PutProject_EditWithUnitType_UnitTypeSaved() {
-        Licensee licensee = new Licensee("PutProject_EditWithUnit", "PutProject_EditWithUnit@uKnow.com", "PutProject_EditWithUnit Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
 
         Projects project = new Projects(licenseeId,licenseeId, "PutProject_EditWithUnit "+randomNumber2, "PATH");
 
