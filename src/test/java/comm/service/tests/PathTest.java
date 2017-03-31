@@ -2,7 +2,6 @@ package comm.service.tests;
 
 import com.google.gson.Gson;
 import com.jayway.restassured.http.ContentType;
-import comm.service.model.Licensee;
 import comm.service.model.Projects;
 import comm.service.model.RestAssuredConfig;
 import org.json.JSONArray;
@@ -31,22 +30,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_ValidPaths_PathSaves() {
-        Licensee licensee = new Licensee("stPath_ValidPa", "stPath_ValidPa@uKnow.com", "stPath_ValidPa Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "stPath_ValidPa " + randomNumber6, "PATH");
 
@@ -109,22 +92,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void GetPath_ValidPaths_PathSaves() {
-        Licensee licensee = new Licensee("ValidPaths", "ValidPaths@uKnow.com", "ValidPaths Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "RequiredProjectInput " + randomNumber6, "PATH");
 
@@ -186,7 +153,6 @@ public class PathTest extends RestAssuredConfig {
 
         given()
                 .pathParam("pathId", pathId)
-                //.queryParam("unitType", "US")
                 .when()
                 .get("/paths/{pathId}")
                 .prettyPeek()
@@ -198,39 +164,23 @@ public class PathTest extends RestAssuredConfig {
                 .body("entity.band.bandId", equalTo(2))
                 .body("pathLength", isEmptyOrNullString())
                 .body("matchingRadios", isEmptyOrNullString())
-                .body("entity.segments.segmentEnds[0].elevation[0]", is(11.11f))
-                .body("entity.segments.segmentEnds[0].elevation[1]", is(12.12f))
-                .body("entity.segments.segmentEnds[0].siteName[0]", is("Test API Site 1"))
-                .body("entity.segments.segmentEnds[0].siteName[1]", is("Test API Site 2"))
-                .body("entity.segments.segmentEnds[0].latitude[0]", is(71.0f))
-                .body("entity.segments.segmentEnds[0].latitude[1]", is(80.0f))
-                .body("entity.segments.segmentEnds[0].longitude[0]", is(22.22f))
-                .body("entity.segments.segmentEnds[0].longitude[1]", is(23.23f))
-                .body("entity.segments.segmentEnds[0].elevationUS[0]", is(36.45f))
-                .body("entity.segments.segmentEnds[0].elevationUS[1]", is(39.76f))
-                .body("entity.segments.segmentEnds[0].passiveFlag[0]", is(false))
-                .body("entity.segments.segmentEnds[0].passiveFlag[1]", is(false));
+                .body("entity.segments.segmentEnds[0].elevation[0]", is(12.12f))
+                .body("entity.segments.segmentEnds[0].elevation[1]", is(11.11f))
+                .body("entity.segments.segmentEnds[0].siteName[1]", is("Test API Site 1"))
+                .body("entity.segments.segmentEnds[0].siteName[0]", is("Test API Site 2"))
+                .body("entity.segments.segmentEnds[0].latitude[1]", is(71.0f))
+                .body("entity.segments.segmentEnds[0].latitude[0]", is(80.0f))
+                .body("entity.segments.segmentEnds[0].longitude[1]", is(22.22f))
+                .body("entity.segments.segmentEnds[0].longitude[0]", is(23.23f))
+                .body("entity.segments.segmentEnds[0].elevationUS[1]", is(36.45f))
+                .body("entity.segments.segmentEnds[0].elevationUS[0]", is(39.76f))
+                .body("entity.segments.segmentEnds[0].passiveFlag[1]", is(false))
+                .body("entity.segments.segmentEnds[0].passiveFlag[0]", is(false));
     }
 
 
     @Test
     public void PostPath_NoElevationSegOne_GroundElevationCannotBeNull() {
-        Licensee licensee = new Licensee("_NoElevationSegOne", "_NoElevationSegOne@uKnow.com", "_NoElevationSegOne Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "_NoElevationSegOne " + randomNumber6, "PATH");
 
@@ -296,22 +246,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_NoElevationSegTwo_GroundElevationCannotBeNull() {
-        Licensee licensee = new Licensee("NoElevationSegTwo_", "NoElevationSegTwo_@uKnow.com", "NoElevationSegTwo_ Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "NoElevationSegTwo_ " + randomNumber6, "PATH");
 
@@ -377,22 +311,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_NoLatitudeSegOne_LatitudeCannotBeNull() {
-        Licensee licensee = new Licensee("_NoLatitudeSegOne", "_NoLatitudeSegOne@uKnow.com", "_NoLatitudeSegOne Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "_NoLatitudeSegOne " + randomNumber6, "PATH");
 
@@ -458,22 +376,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_NoLatitudeSegTwo_LatitudeCannotBeNull() {
-        Licensee licensee = new Licensee("NoLatitudeSegTwo", "NoLatitudeSegTwo@uKnow.com", "NoLatitudeSegTwo Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "NoLatitudeSegTwo " + randomNumber6, "PATH");
 
@@ -537,22 +439,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_NoLongitudeSegOne_LongitudeCannotBeNull() {
-        Licensee licensee = new Licensee("NoLongitudeSegOne_", "NoLongitudeSegOne_@uKnow.com", "NoLongitudeSegOne_ Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "NoLongitudeSegOne_ " + randomNumber6, "PATH");
 
@@ -618,22 +504,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_NoLongitudeSegTwo_LongitudeCannotBeNull() {
-        Licensee licensee = new Licensee("NoLongitudeSegTwo_", "NoLongitudeSegTwo_@uKnow.com", "NoLongitudeSegTwo_ Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "NoLongitudeSegTwo_ " + randomNumber6, "PATH");
 
@@ -699,22 +569,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_NoSiteNameSegOne_SiteNameCannotBeNull() {
-        Licensee licensee = new Licensee("NoSiteNameSegOne", "NoSiteNameSegOne@uKnow.com", "NoSiteNameSegOne Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "NoSiteNameSegOne " + randomNumber6, "PATH");
 
@@ -780,22 +634,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void PostPath_NoSiteNameSegTwo_SiteNameCannotBeNull() {
-        Licensee licensee = new Licensee("_NoSiteNameSegTwo", "_NoSiteNameSegTwo@uKnow.com", "_NoSiteNameSegTwo Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "_NoSiteNameSegTwo " + randomNumber6, "PATH");
 
@@ -862,22 +700,6 @@ public class PathTest extends RestAssuredConfig {
 
     @Test
     public void DeletePath_ValidPaths_DeletePath() {
-        Licensee licensee = new Licensee("DeletePath_", "DeletePath_@uKnow.com", "DeletePath_ Co", "PATH");
-        licenseeId = given()
-                .contentType(ContentType.JSON)
-                .body(licensee)
-                .when()
-                .post("/licensees")
-                .then()
-                .statusCode(201)
-                .statusLine("HTTP/1.1 201 ")
-                .body("entity.companyName", is(licensee.getCompanyName()))
-                .body("entity.contactEmail", is(licensee.getContactEmail()))
-                .body("entity.contactName", is(licensee.getContactName()))
-                .body("entity.licenseeCode", is(licensee.getLicenseeCode()))
-                .extract()
-                .path("entity.licenseeId");
-
 
         Projects project = new Projects(licenseeId, licenseeId, "DeletePath_ " + randomNumber6, "PATH");
 
@@ -925,7 +747,6 @@ public class PathTest extends RestAssuredConfig {
             segmentsArray.put(segment);
             pathDetailsJson.put("segments", segmentsArray);
 
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -965,7 +786,7 @@ public class PathTest extends RestAssuredConfig {
     }
 
     @Test
-    public void DeletePath_ValidPaths_DeletePathValFail() {
+    public void DeletePath_PathAlreadyDeactivated_UnableToDeletePath() {
 
         ArrayList myList = new ArrayList();
 
@@ -980,7 +801,8 @@ public class PathTest extends RestAssuredConfig {
                 .delete("/paths")
                 .prettyPeek()
                 .then()
-                .statusCode(201);
+                .statusCode(404)
+                .body("message", is("Unable to delete path with pathId 12 - Path Id is already deactivated"));
     }
 
 
