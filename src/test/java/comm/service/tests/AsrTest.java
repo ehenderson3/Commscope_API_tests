@@ -1,7 +1,7 @@
 package comm.service.tests;
 
 import com.jayway.restassured.http.ContentType;
-import comm.service.model.Licensee;
+import comm.service.model.CompanyModel;
 import comm.service.model.RestAssuredConfig;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -10,7 +10,6 @@ import java.util.Random;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 public class AsrTest extends RestAssuredConfig {
     Random rndNum = new Random();
@@ -27,7 +26,7 @@ public class AsrTest extends RestAssuredConfig {
     @DataProvider(name = "Default Licensee")
     public Object[][] createLicData() {
         return new Object[][]{
-                {new Licensee("Official Company"+ randomNumber1, "enrique@surgeforwoard.com", "34iij4j4u", "PATH")},
+                {new CompanyModel("Official Company"+ randomNumber1, "enrique@surgeforwoard.com", "34iij4j4u", "PATH")},
         };
 
     }
