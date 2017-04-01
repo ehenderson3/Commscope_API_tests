@@ -2,7 +2,7 @@ package comm.service.model;
 
 public class CallSign {
     private int createUserId;
-    private int defaultLicenseeId;
+    private int defaultCompanyId;
     private String projectName;
     private String projectType;
 
@@ -10,20 +10,20 @@ public class CallSign {
 
     public CallSign(){};
 
-    public CallSign(int createUserId, int defaultLicensee, String projectName, String projectType){
+    public CallSign(int createUserId, int defaultCompanyId, String projectName, String projectType){
         this.createUserId = createUserId;
-        this.defaultLicenseeId = defaultLicensee;
+        this.defaultCompanyId = defaultCompanyId;
         this.projectName = projectName;
         this.projectType = projectType;
     };
 
 
-    public int getDefaultLicenseeId(){
-        return defaultLicenseeId;
+    public int getDefaultCompanyId(){
+        return defaultCompanyId;
     }
 
-    public void setDefaultLicenseeId(int defaultLicenseeId){
-        this.defaultLicenseeId = defaultLicenseeId;
+    public void defaultCompanyId(int defaultCompanyId){
+        this.defaultCompanyId = defaultCompanyId;
     }
 
     public String getProjectName(){
