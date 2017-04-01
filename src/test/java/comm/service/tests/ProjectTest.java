@@ -263,7 +263,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditDefaultToValidFresnelZoneRadius_NewFresnelZoneRadiusSaved() {
 
-        Projects project = new Projects(12,3, "ValidProject "+randomNumber4, "PATH");
+        Projects project = new Projects(randomNumber4,3, "ValidProject "+randomNumber4, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
@@ -734,7 +734,7 @@ public class ProjectTest extends RestAssuredConfig {
     @Test
     public void PutProject_EditKFactorTo001_KFactorOutOfRangeError() {
 
-        Projects project = new Projects(71,3, "EditKFactorTo001 "+randomNumber2, "PATH");
+        Projects project = new Projects(81,4, "EditKFactorTo001 "+randomNumber2, "PATH");
 
         projectId = given()
                 .contentType(ContentType.JSON)
