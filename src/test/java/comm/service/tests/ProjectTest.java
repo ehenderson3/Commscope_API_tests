@@ -1412,6 +1412,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body(project)
                 .when()
                 .post("/projects")
+                .prettyPeek()
                 .then()
                 .statusCode(201)
                 .body("entity.projectName", is(project.getProjectName()))
@@ -1430,7 +1431,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .log().all()
                 .when()
                 .put("/projects/{projectId}")
-                    .prettyPeek()
+                .prettyPeek()
                 .prettyPeek()
                 .then()
                 .statusCode(200)
@@ -1460,6 +1461,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
+
 
 
 }
