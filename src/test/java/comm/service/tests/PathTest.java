@@ -31,6 +31,8 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void PostPath_ValidPaths_PathSaves() {
 
+
+
         Projects project = new Projects(44, 1, "stPath_ValidPa " + randomNumber6, "PATH");
 
         projectId = given()
@@ -40,7 +42,7 @@ public class PathTest extends RestAssuredConfig {
                 .post("/projects")
                 .then()
                 .statusCode(201)
-                .body("entity.projectName", is(project.getProjectName()))
+                .body("entity.projectName", is(project.getProjectName()))//getDefaultCompanyId
                 .body("entity.projectType", equalTo(project.getProjectType()))
                 .extract()
                 .path("entity.projectId");
@@ -81,6 +83,7 @@ public class PathTest extends RestAssuredConfig {
         System.out.println("jsonPath = " + pathDetailsJson);
 
         pathId = given()
+
                 .contentType(ContentType.JSON)
                 .body(pathDetailsJson.toString())
                 .when()
@@ -140,6 +143,12 @@ public class PathTest extends RestAssuredConfig {
             e.printStackTrace();
         }
 
+
+
+
+
+
+
         System.out.println("jsonPath = " + pathDetailsJson);
 
         pathId = given()
@@ -161,7 +170,7 @@ public class PathTest extends RestAssuredConfig {
                 .then()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 ")
-                .body("entity.pathName", equalTo("Test Path 1 " + "copy - " + pathId ))
+                .body("entity.pathName", equalTo("Test Path 1"))
                 .body("entity.band.bandId", equalTo(2))
                 .body("entity.band.band", equalTo(0.96f))
                 .body("entity.band.bandDescription", equalTo("960 MHz"))
@@ -190,7 +199,145 @@ public class PathTest extends RestAssuredConfig {
 
 
 
+    @Test
+    public void SplitPath_ValidPaths_PathSaves() {
+        Projects project = new Projects(32, 5, "SplitPath_ValidPaths_PathSavesInput " + randomNumber6, "PATH");
 
+        projectId = given()
+                .contentType(ContentType.JSON)
+                .body(project)
+                .when()
+                .post("/projects")
+                .then()
+                .statusCode(201)
+                .body("entity.projectName", is(project.getProjectName()))
+                .body("entity.projectType", equalTo(project.getProjectType()))
+                .extract()
+                .path("entity.projectId");
+
+        JSONObject pathDetailsJson = new JSONObject();
+        JSONArray segmentsArray = new JSONArray();
+        JSONArray segmentEndsArray = new JSONArray();
+        JSONObject segmentEndJson1 = new JSONObject();
+        JSONObject segmentEndJson2 = new JSONObject();
+        JSONObject segment = new JSONObject();
+
+        try {
+            segmentEndJson1.put("elevation", 11.11);
+            segmentEndJson1.put("latitude", 71);
+            segmentEndJson1.put("longitude", 22.22);
+            segmentEndJson1.put("siteName", "Test API Site 1");
+
+            segmentEndJson2.put("elevation", 12.12);
+            segmentEndJson2.put("latitude", 80);
+            segmentEndJson2.put("longitude", 23.23);
+            segmentEndJson2.put("siteName", "Test API Site 2");
+
+            pathDetailsJson.put("projectId", projectId);
+            pathDetailsJson.put("bandId", 2);
+            pathDetailsJson.put("pathName", "Test Path 1");
+
+            segmentEndsArray.put(segmentEndJson1);
+            segmentEndsArray.put(segmentEndJson2);
+
+            segment.put("segmentEnds", segmentEndsArray);
+            segmentsArray.put(segment);
+            pathDetailsJson.put("segments", segmentsArray);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("jsonPath = " + pathDetailsJson);
+
+        pathId = given()
+                .contentType(ContentType.JSON)
+                .body(pathDetailsJson.toString())
+                .when()
+                .post("/paths")
+                .then()
+                .extract()
+                .path("entity.pathId");
+
+        given()
+                .pathParam("pathId", pathId)
+                .when()
+                .get("/paths/{pathId}")
+                .then()
+                .statusCode(200)
+                .statusLine("HTTP/1.1 200 ")
+                .body("entity.pathId", equalTo(pathId))
+                .body("entity.pathName", equalTo("Test Path 1"))
+                .body("entity.band.bandId", equalTo(2))
+                .body("pathLength", isEmptyOrNullString())
+                .body("matchingRadios", isEmptyOrNullString())
+                .body("entity.segments.segmentEnds[0].elevation[0]", is(11.11f))
+                .body("entity.segments.segmentEnds[0].elevation[1]", is(12.12f))
+                .body("entity.segments.segmentEnds[0].siteName[1]", is("Test API Site 2"))
+                .body("entity.segments.segmentEnds[0].siteName[0]", is("Test API Site 1"))
+                .body("entity.segments.segmentEnds[0].latitude[0]", is(71.0f))
+                .body("entity.segments.segmentEnds[0].latitude[1]", is(80.0f))
+                .body("entity.segments.segmentEnds[0].longitude[0]", is(22.22f))
+                .body("entity.segments.segmentEnds[0].longitude[1]", is(23.23f))
+                .body("entity.segments.segmentEnds[0].elevationUS[0]", is(36.45f))
+                .body("entity.segments.segmentEnds[0].elevationUS[1]", is(39.76f))
+                .body("entity.segments.segmentEnds[0].passiveFlag[1]", is(false))
+                .body("entity.segments.segmentEnds[0].passiveFlag[0]", is(false));
+
+
+        ArrayList myList = new ArrayList();
+        myList.add(pathId);
+
+        Projects project2 = new Projects(44, 2, "Split_Project " + randomNumber6, "PATH",myList);
+
+
+        Map<String, ArrayList> mapOfList = new HashMap<String, ArrayList>();
+        mapOfList.put("paths", myList);
+
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(pathDetailsJson.toString())
+                .body(project2)
+                .when()
+                .post("/projects/split")
+                .prettyPeek()
+                .then()
+                .statusCode(201)
+                .statusLine("HTTP/1.1 201 ")
+                .body("message", equalTo("Project Split_Project " + randomNumber6 + " created"))
+                .body("status", equalTo("Ok"))
+                .body("entity.projectName", equalTo("Split_Project "+ randomNumber6))
+                .body("entity.createUser.userId", equalTo(1))
+                .body("entity.createUser.userName", equalTo("Lego Admin"))
+                .body("entity.unitType", equalTo("US"))
+                .body("entity.paths.pathName", hasItem("Test Path 1"))
+                .body("entity.paths[0].segments[0].segmentEnds.elevation[0]", is(11.11f))
+                .body("entity.paths[0].segments[0].segmentEnds.segmentEndNumber[0]", is(1))
+                .body("entity.paths[0].segments[0].segmentEnds.siteName[0]", is("Test API Site 1"))
+                .body("entity.paths[0].segments[0].segmentEnds.latitude[0]", is(71.0f))
+                .body("entity.paths[0].segments[0].segmentEnds.longitude[0]", is(22.22f))
+                .body("entity.paths[0].segments[0].segmentEnds.elevation[0]", is(11.11f))
+                .body("entity.paths[0].segments[0].segmentEnds.elevationUS[0]", is(36.45f))
+                .body("entity.paths[0].segments[0].segmentEnds.passiveFlag[0]", is(false))
+                .body("entity.paths[0].segments[0].segmentEnds.elevation[0]", is(11.11f))
+
+
+                .body("entity.paths.pathName", hasItem("Test Path 1"))
+                .body("entity.paths[0].segments[0].segmentEnds.elevation[0]", is(11.11f))
+                .body("entity.paths[0].segments[0].segmentEnds.segmentEndNumber[0]", is(1))
+                .body("entity.paths[0].segments[0].segmentEnds.siteName[0]", is("Test API Site 1"))
+                .body("entity.paths[0].segments[0].segmentEnds.latitude[0]", is(71.0f))
+                .body("entity.paths[0].segments[0].segmentEnds.longitude[0]", is(22.22f))
+                .body("entity.paths[0].segments[0].segmentEnds.elevation[0]", is(11.11f))
+                .body("entity.paths[0].segments[0].segmentEnds.elevationUS[0]", is(36.45f))
+                .body("entity.paths[0].segments[0].segmentEnds.passiveFlag[0]", is(false))
+                .body("entity.paths[0].segments[0].segmentEnds.elevation[0]", is(11.11f))
+
+
+        ;
+
+    }
 
     @Test
     public void GetPath_ValidPaths_PathSaves() {
@@ -266,18 +413,18 @@ public class PathTest extends RestAssuredConfig {
                 .body("entity.band.bandId", equalTo(2))
                 .body("pathLength", isEmptyOrNullString())
                 .body("matchingRadios", isEmptyOrNullString())
-                .body("entity.segments.segmentEnds[0].elevation[0]", is(12.12f))
-                .body("entity.segments.segmentEnds[0].elevation[1]", is(11.11f))
-                .body("entity.segments.segmentEnds[0].siteName[1]", is("Test API Site 1"))
-                .body("entity.segments.segmentEnds[0].siteName[0]", is("Test API Site 2"))
-                .body("entity.segments.segmentEnds[0].latitude[1]", is(71.0f))
-                .body("entity.segments.segmentEnds[0].latitude[0]", is(80.0f))
-                .body("entity.segments.segmentEnds[0].longitude[1]", is(22.22f))
-                .body("entity.segments.segmentEnds[0].longitude[0]", is(23.23f))
-                .body("entity.segments.segmentEnds[0].elevationUS[1]", is(36.45f))
-                .body("entity.segments.segmentEnds[0].elevationUS[0]", is(39.76f))
-                .body("entity.segments.segmentEnds[0].passiveFlag[1]", is(false))
-                .body("entity.segments.segmentEnds[0].passiveFlag[0]", is(false));
+                .body("entity.segments.segmentEnds[0].elevation[1]", is(12.12f))
+                .body("entity.segments.segmentEnds[0].elevation[0]", is(11.11f))
+                .body("entity.segments.segmentEnds[0].siteName[0]", is("Test API Site 1"))
+                .body("entity.segments.segmentEnds[0].siteName[1]", is("Test API Site 2"))
+                .body("entity.segments.segmentEnds[0].latitude[0]", is(71.0f))
+                .body("entity.segments.segmentEnds[0].latitude[1]", is(80.0f))
+                .body("entity.segments.segmentEnds[0].longitude[0]", is(22.22f))
+                .body("entity.segments.segmentEnds[0].longitude[1]", is(23.23f))
+                .body("entity.segments.segmentEnds[0].elevationUS[0]", is(36.45f))
+                .body("entity.segments.segmentEnds[0].elevationUS[1]", is(39.76f))
+                .body("entity.segments.segmentEnds[0].passiveFlag[0]", is(false))
+                .body("entity.segments.segmentEnds[0].passiveFlag[1]", is(false));
     }
 
 
