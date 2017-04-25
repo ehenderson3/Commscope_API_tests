@@ -1039,7 +1039,7 @@ public class PathTest extends RestAssuredConfig {
 
         ArrayList myList = new ArrayList();
 
-        myList.add(12);
+        myList.add(1);
         Map<String, ArrayList> mapOfList = new HashMap<String, ArrayList>();
         mapOfList.put("pathsToDelete", myList);
 
@@ -1051,7 +1051,7 @@ public class PathTest extends RestAssuredConfig {
                 .prettyPeek()
                 .then()
                 .statusCode(404)
-                .body("message", is("Unable to delete path with pathId 12 - Path Id is already deactivated"));
+                .body("message", is("Unable to delete path with pathId 1 - Path Id is already deactivated"));
     }
 
 
