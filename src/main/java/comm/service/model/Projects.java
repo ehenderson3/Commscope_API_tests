@@ -1,5 +1,7 @@
 package comm.service.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by ehend on 2/11/2017.
  */
@@ -8,6 +10,8 @@ public class Projects {
     private int defaultCompanyId;
     private String projectName;
     private String projectType;
+
+    private ArrayList paths;
 
 
 
@@ -27,6 +31,15 @@ public class Projects {
         this.defaultCompanyId = defaultCompanyId;
         this.projectName = projectName;
         this.projectType = projectType;
+    };
+
+    public Projects(int createUserId, int defaultCompanyId, String projectName, String projectType, ArrayList pathsVal){
+        //this.createUserId = createUserId;
+        this.defaultCompanyId = defaultCompanyId;
+        this.projectName = projectName;
+        this.projectType = projectType;
+        this.paths = pathsVal;
+
     };
 
     public Projects(int createUserId, String projectName, String projectType){
@@ -72,6 +85,14 @@ public class Projects {
     public Projects(String unitTypeVal ){
         this.unitType = unitTypeVal;
     };
+
+    public ArrayList getPaths(){
+        return paths;
+    }
+    public void setPaths(ArrayList pathsVal){
+        this.paths = pathsVal;
+    }
+
 
     public int getDefaultCompanyId(){
         return defaultCompanyId;
@@ -129,14 +150,6 @@ public class Projects {
     public void setCreateUserId(int createUserId){
         this.createUserId = createUserId;
     }
-
-//    public int getDefaultLicenseeId(){
-//        return defaultCompanyId;
-//    }
-//
-//    public void setDefaultLicenseeId(int defaultLicenseeId){
-//        this.defaultCompanyId = defaultLicenseeId;
-//    }
 
     public String getProjectName(){
         return projectName;

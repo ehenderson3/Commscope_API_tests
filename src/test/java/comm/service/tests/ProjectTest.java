@@ -164,7 +164,7 @@ public class ProjectTest extends RestAssuredConfig {
     public void PostProject_ProjectNameNotUnique_SC_CONFLICT(Projects projects) {
 
         Map<String,Integer> ProjectMapI = new HashMap<String, Integer>();
-        ProjectMapI.put("defaultCompanyId",5);
+        ProjectMapI.put("defaultCompanyId",1);
 
             given()
                 .contentType(ContentType.JSON)

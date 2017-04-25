@@ -23,7 +23,6 @@ public class DomainBands extends RestAssuredConfig {
         admitStudent_MissingMandatoryFields_FailToAdmit
      */
 
-    int licenseeId = 0;
     int domain = 1;
 
 
