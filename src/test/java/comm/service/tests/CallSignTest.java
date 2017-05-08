@@ -14,14 +14,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 public class CallSignTest extends RestAssuredConfig {
     Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(1000);
     int randomNumber1 = rndNum.nextInt(1000);
-    int randomNumber2 = rndNum.nextInt(1000);
-    int randomNumber3 = rndNum.nextInt(1000);
-    int randomNumber4 = rndNum.nextInt(1000);
-    int randomNumber5 = rndNum.nextInt(1000);
-    int randomNumber6 = rndNum.nextInt(1000);
-    int randomNumber7 = rndNum.nextInt(1000);
 
 
     @DataProvider(name = "Default Licensee")
@@ -31,17 +24,6 @@ public class CallSignTest extends RestAssuredConfig {
         };
 
     }
-
-
-    /*
-    MethodName_StateUnderTest_ExpectedBehavior:
-    There are arguments against this strategy that if method
-    names change as part of code refactoring than test name like this should also change or it becomes
-    difficult to comprehend at a later stage. Following are some of the example:
-        isAdult_AgeLessThan18_False
-        withdrawMoney_InvalidAccount_ExceptionThrown
-        admitStudent_MissingMandatoryFields_FailToAdmit
-     */
 
     int licenseeId = 0;
     int projectId = 0;
