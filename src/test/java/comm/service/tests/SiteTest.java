@@ -116,7 +116,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
 
     }
 
@@ -204,7 +204,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -290,7 +290,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -376,7 +376,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -462,7 +462,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -551,7 +551,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));;
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -637,7 +637,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -724,7 +724,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -812,7 +812,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -898,7 +898,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -984,7 +984,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1074,7 +1074,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));;
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1163,7 +1163,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1255,7 +1255,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1347,7 +1347,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1438,7 +1438,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1530,7 +1530,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1626,7 +1626,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1722,7 +1722,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(12.12f))
                 .body("entities.elevationUS", hasItem(39.76f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1818,7 +1818,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -1914,7 +1914,7 @@ public class SiteTest extends RestAssuredConfig {
                 .body("entities.elevation", hasItem(11.11f))
                 .body("entities.elevationUS", hasItem(36.45f));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
     @Test
@@ -2005,10 +2005,10 @@ public class SiteTest extends RestAssuredConfig {
                 .then()
                 .body("message", equalTo("Successfully retrieved 0 sites"));
 
-        DeletePath_CleanUp(pathId);
+        deletePathCleanUp(pathId);
     }
 
-    private void DeletePath_CleanUp(int pathNum) {
+    private void deletePathCleanUp(int pathNum) {
 
         ArrayList myList = new ArrayList();
 
