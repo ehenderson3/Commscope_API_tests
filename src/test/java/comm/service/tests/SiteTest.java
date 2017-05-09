@@ -1340,7 +1340,7 @@ public class SiteTest extends RestAssuredConfig {
                 .prettyPeek()
                 .then()
                 .body("entities.siteName", hasItem("LIKECoIdSiteA"))
-                .body("entities.company.companyId", hasItem(5))
+                .body("entities.company.companyId", hasItem(1))
                 .body("entities.callSign", hasItem("KA2071"))
                 .body("entities.latitude", hasItem(88.0f))
                 .body("entities.longitude", hasItem(22.22f))
