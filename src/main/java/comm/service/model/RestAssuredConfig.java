@@ -10,7 +10,7 @@ public class RestAssuredConfig {
 
     @BeforeSuite(alwaysRun = true)
     public void configure() {
-        RestAssured.baseURI = "https://comsearch.dev.surgeforward.com";
+        RestAssured.baseURI = "https://comsearch.staging.surgeforward.com";
         RestAssured.port = 8443;
 
     }

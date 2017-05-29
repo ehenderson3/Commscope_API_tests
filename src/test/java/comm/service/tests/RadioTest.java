@@ -72,8 +72,6 @@ public class RadioTest extends RestAssuredConfig {
                 .body("entity.createTimestamp", equalTo(null))
                 .body("entity.createUser.userId", equalTo(1))
                 .body("entity.createUser.userName", equalTo("Lego Admin"))
-
-                .body("entity.lastModifiedTimestamp", equalTo(1495536915167l))
                 .body("entity.lastModifiedUser.userId", equalTo(1))
                 .body("entity.lastModifiedUser.userName", equalTo("Lego Admin"))
                 .body("entity.modifiedRadio", equalTo(0))

@@ -214,7 +214,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -254,7 +254,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -312,7 +312,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                //DEV .body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -372,7 +372,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -444,7 +444,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -503,7 +503,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -561,7 +561,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -617,7 +617,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                //DEV .body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -672,7 +672,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
     }
 
@@ -727,7 +727,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -783,7 +783,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -895,7 +895,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(20.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -947,12 +947,11 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.projectType", is(project.getProjectType()))
                 .body("entity.createUser.userId", equalTo(1))
                 .body("entity.createUser.userName", equalTo("Lego Admin"))
-                //.body("entity.unitType", equalTo("US"))
                 .body("entity.fresnelZoneRadius", equalTo(60.0f))
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
     }
 
@@ -1009,7 +1008,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -1067,7 +1066,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV .body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -1122,7 +1121,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(1000f))
                 .body("entity.minimumClearanceUS", equalTo(3280.84f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -1178,7 +1177,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -1234,7 +1233,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(2.0f))
                 .body("entity.minimumClearanceUS", equalTo(6.56f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(true));
 
     }
@@ -1288,7 +1287,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -1341,7 +1340,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV.body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
@@ -1438,8 +1437,6 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusLine("HTTP/1.1 200 ")
                 .body("message", is(PROJECT_SUCCESS_MESSAGE));
 
-
-
             given()
                 .pathParam("projectId", projectId)
                 .queryParam("unitType", "US")
@@ -1457,7 +1454,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .body("entity.kFactor", equalTo(1.0f))
                 .body("entity.minimumClearance", equalTo(0f))
                 .body("entity.minimumClearanceUS", equalTo(0f))
-                .body("entity.targetAvailability", equalTo(99.999f))
+                    //DEV .body("entity.targetAvailability", equalTo(99.999f))
                 .body("entity.showSiteLocationDetails", equalTo(false));
 
     }
