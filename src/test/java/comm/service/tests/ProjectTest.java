@@ -351,7 +351,7 @@ public class ProjectTest extends RestAssuredConfig {
                 .statusCode(400)
                 .statusLine("HTTP/1.1 400 ")
                 .body("error",is("Bad Request"))
-                .body("message", containsString(ERROR_CANNOT_DESERIALIZE_FLOAT+"\"A\": not a valid Float value"));
+                .body("message", containsString(ERROR_CANNOT_DESERIALIZE_DUB+"\"A\": not a valid Double value"));
 
 
 
@@ -1200,7 +1200,7 @@ public class ProjectTest extends RestAssuredConfig {
 
         Map<String,Boolean> ProjectMapI = new HashMap<String, Boolean>();
         ProjectMapI.put("showSiteLocationDetails", true);
-        Projects projectUpdate = new Projects(4, -8,99.995f,1,2,true);
+        Projects projectUpdate = new Projects(4, -8,99.999d,1,2,true);
 
             given()
                 .contentType(ContentType.JSON)

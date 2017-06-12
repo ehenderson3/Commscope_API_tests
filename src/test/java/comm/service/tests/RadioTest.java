@@ -44,8 +44,8 @@ public class RadioTest extends RestAssuredConfig {
                 .body("entity.radioType.radioTypeId", equalTo(2))
                 .body("entity.radioType.radioType", equalTo("D ­ Digital"))
 
-                .body("entity.manufacturer.manufacturerId", equalTo(9))
-                .body("entity.manufacturer.manufacturerName", equalTo("Exalt Communications Inc."))
+                .body("entity.companyViewDto.companyId", equalTo(9))
+                .body("entity.companyViewDto.companyName", equalTo("Exalt Communications Inc."))
                 .body("entity.modulationType.modulationTypeId", equalTo(2))
                 .body("entity.modulationType.modulationType", equalTo("A ­ Adaptive"))
 
