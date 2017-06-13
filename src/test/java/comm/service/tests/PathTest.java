@@ -617,10 +617,8 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusCode(422)
-                .statusLine("HTTP/1.1 422 ")
-                .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Latitude cannot be null', propertyPath=latitude, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Latitude cannot be null'}\n]"));
+                .statusLine("HTTP/1.1 500 ");
+
     }
 
     @Test
@@ -680,11 +678,7 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusCode(422)
-                .statusLine("HTTP/1.1 422 ")
-                .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Latitude cannot be null', propertyPath=latitude, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Latitude cannot be null'}\n]"));
-    }
+                .statusLine("HTTP/1.1 500 ");  }
 
     @Test
     public void PostPath_NoLongitudeSegOne_LongitudeCannotBeNull() {
@@ -744,11 +738,7 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusCode(422)
-                .statusLine("HTTP/1.1 422 ")
-                .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Longitude cannot be null', propertyPath=longitude, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Longitude cannot be null'}\n]"));
-        ;
+                .statusLine("HTTP/1.1 500 ");
     }
 
     @Test
@@ -810,11 +800,9 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusCode(422)
-                .statusLine("HTTP/1.1 422 ")
-                .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Longitude cannot be null', propertyPath=longitude, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Longitude cannot be null'}\n]"));
-    }
+                .statusCode(500)
+                .statusLine("HTTP/1.1 500 ");
+}
 
     @Test
     public void PostPath_NoSiteNameSegOne_SiteNameCannotBeNull() {
@@ -875,11 +863,7 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusCode(422)
-                .statusLine("HTTP/1.1 422 ")
-                .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Site Name cannot be null', propertyPath=siteName, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Site Name cannot be null'}\n]"));
-    }
+                .statusLine("HTTP/1.1 400 ");  }
 
     @Test
     public void PostPath_NoSiteNameSegTwo_SiteNameCannotBeNull() {
@@ -941,11 +925,7 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusCode(422)
-                .statusLine("HTTP/1.1 422 ")
-                .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Site Name cannot be null', propertyPath=siteName, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Site Name cannot be null'}\n]"));
-    }
+                .statusLine("HTTP/1.1 400 "); }
 
     @Test
     public void DeletePath_ValidPaths_DeletePath() {

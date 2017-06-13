@@ -1,5 +1,6 @@
 package comm.service.tests;
 
+import com.jayway.restassured.http.ContentType;
 import comm.service.model.RestAssuredConfig;
 import org.testng.annotations.Test;
 
@@ -40,12 +41,12 @@ public class AntennaTest extends RestAssuredConfig {
                 .body("entity.antenna.classification.classificationId", equalTo(8))
                 .body("entity.antenna.classification.classification", equalTo("Solid Parabolic"))
                 .body("entity.antenna.classification.classification", equalTo("Solid Parabolic"))
-                .body("entity.antenna.polarization.polarizationId", equalTo(1))
-                .body("entity.antenna.polarization.polarization", equalTo("D ­ Dual"))
+                .body("entity.antenna.polarizationCapability.polarizationCapabilityId", equalTo(1))
+                .body("entity.antenna.polarizationCapability.polarizationCapability", equalTo("D ­ Dual"))
                 .body("entity.antenna.antennaFamily.antennaFamilyId", equalTo(3))
                 .body("entity.antenna.antennaFamily.antennaFamily", equalTo("Commscope Family"))
-                .body("entity.antenna.manufacturer.manufacturerId", equalTo(1))
-                .body("entity.antenna.manufacturer.manufacturerName", equalTo("Commscope"))
+                .body("entity.antenna.companyViewDto.companyId", equalTo(6))
+                .body("entity.antenna.companyViewDto.companyName", equalTo("Commscope"))
                 .body("entity.antenna.segmentEndAntennasByAntennaId", equalTo(null))
                 .body("entity.antenna.antennaApplications.antennaApplicationId[0]", equalTo(1))
                 .body("entity.antenna.antennaApplications.antennaApplication[0]", equalTo("MW PtP ­ Microwave Point­to­Point"))
@@ -94,12 +95,12 @@ public class AntennaTest extends RestAssuredConfig {
             .body("entities.antenna.diameter", hasItem(2.44f))
             .body("entities.antenna.classification.classificationId", hasItem(8))
             .body("entities.antenna.classification.classification", hasItem("Solid Parabolic"))
-            .body("entities.antenna.polarization.polarizationId", hasItem(1))
-            .body("entities.antenna.polarization.polarization", hasItem("D ­ Dual"))
+            .body("entities.antenna.polarizationCapability.polarizationCapabilityId", hasItem(1))
+            .body("entities.antenna.polarizationCapability.polarizationCapability", hasItem("D ­ Dual"))
             .body("entities.antenna.antennaFamily.antennaFamilyId", hasItem(3))
             .body("entities.antenna.antennaFamily.antennaFamily", hasItem("Commscope Family"))
-            .body("entities.antenna.manufacturer.manufacturerId", hasItem(1))
-            .body("entities.antenna.manufacturer.manufacturerName", hasItem("Commscope"))
+            .body("entities.antenna.companyViewDto.companyId", hasItem(6))
+            .body("entities.antenna.companyViewDto.companyName", hasItem("Commscope"))
             .body("entities.antenna.segmentEndAntennasByAntennaId[0]", equalTo(null))
             .body("entities.antenna.antennaApplications[0].antennaApplicationId[0]", equalTo(1))
             .body("entities.antenna.antennaApplications.antennaApplication[0]", hasItem("MW PtP ­ Microwave Point­to­Point"))
@@ -148,6 +149,7 @@ public class AntennaTest extends RestAssuredConfig {
 
     }
 
+//?search=[[{value:"P8F-9",field:antennaModel,operator:EQ}]]
 
     @Test
     public void getAntennaSpecsSearch_valueP8F9FiveldmodelNumberOpNot_ResultsetContainsNotP8F9FieldantennaCode() throws UnsupportedEncodingException {
@@ -163,8 +165,8 @@ public class AntennaTest extends RestAssuredConfig {
                 .get(search+stringEncoded+revision)
                 .prettyPeek()
                 .then()
-                .body("message", equalTo("Successfully retrieved 3 antennaSpecs"))
-                .body("count", equalTo(3))
+                .body("message", equalTo("Successfully retrieved 5 antennaSpecs"))
+                .body("count", equalTo(5))
                 .body("entities.antennaSpecId", hasItem(6))
                 .body("entities.antenna[0].modelNumber", equalTo("VHLPX2-11"))
                 .body("entities.antennaSpecId", hasItem(7))
@@ -211,8 +213,8 @@ public class AntennaTest extends RestAssuredConfig {
                 .get(search+stringEncoded+revision)
                 .prettyPeek()
                 .then()
-                .body("message", equalTo("Successfully retrieved 8 antennaSpecs"))
-                .body("count", equalTo(8))
+                .body("message", equalTo("Successfully retrieved 10 antennaSpecs"))
+                .body("count", equalTo(10))
                 .body("entities.antennaCode[0]", equalTo("02306AZ"))
                 .body("entities.antennaCode[1]", equalTo("02306AY"))
                 .body("entities.antennaCode[2]", equalTo("02306AX"))
@@ -252,7 +254,7 @@ public class AntennaTest extends RestAssuredConfig {
     @Test
     public void getAntennaSpecsSearch_valueCommscopemanufacturerNameOpNOT_ResultsetNOTContains02306Commscope() throws UnsupportedEncodingException {
         String valueVal = "Commscope";
-        String fieldVal = "manufacturerName";
+        String fieldVal = "companyName";
         String operatorVal = "NOT";
         String url = "[[{\"value\":\"" + valueVal + "\",\"field\":\"" + fieldVal + "\",\"operator\":\""+operatorVal+"\"}]]";
         String stringEncoded = URLEncoder.encode(url, "UTF-8");
@@ -263,14 +265,14 @@ public class AntennaTest extends RestAssuredConfig {
                 .get(search+stringEncoded+revision)
                 .prettyPeek()
                 .then()
-                .body("message", equalTo("Successfully retrieved 0 antennaSpecs"))
-                .body("count", equalTo(0));
+                .body("message", equalTo("Successfully retrieved 2 antennaSpecs"))
+                .body("count", equalTo(2));
     }
 
     @Test
     public void getAntennaSpecsSearch_value02306antennaCodeOpEQ_ResultsetContainsCommscopemanufacturerName() throws UnsupportedEncodingException{
         String valueVal = "Commscope";
-        String fieldVal = "manufacturerName";
+        String fieldVal = "companyName";
         String operatorVal = "EQ";
 
         String url = "[[{\"value\":\"" + valueVal + "\",\"field\":\"" + fieldVal + "\",\"operator\":\""+operatorVal+"\"}]]";
@@ -284,16 +286,17 @@ public class AntennaTest extends RestAssuredConfig {
                 .then()
                 .body("message", equalTo("Successfully retrieved 10 antennaSpecs"))
                 .body("count", equalTo(10))
-                .body("entities.antenna.manufacturer[0].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[1].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[2].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[3].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[4].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[5].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[6].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[7].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[8].manufacturerName", equalTo("Commscope"))
-                .body("entities.antenna.manufacturer[9].manufacturerName", equalTo("Commscope"));
+                .body("entities.antenna.companyViewDto[0].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[1].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[2].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[3].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[4].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[5].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[6].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[7].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[8].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[9].companyName", equalTo("Commscope"))
+                .body("entities.antenna.companyViewDto[0].companyName", equalTo("Commscope"));
 
     }
 
@@ -339,8 +342,8 @@ public class AntennaTest extends RestAssuredConfig {
                 .get(search+stringEncoded+revision)
                 .prettyPeek()
                 .then()
-                .body("message", equalTo("Successfully retrieved 8 antennaSpecs"))
-                .body("count", equalTo(8))
+                .body("message", equalTo("Successfully retrieved 10 antennaSpecs"))
+                .body("count", equalTo(10))
                 .body("entities.status[1].status", equalTo("Active"))
                 .body("entities.status[2].status", equalTo("Active"))
                 .body("entities.status[3].status", equalTo("Active"))
@@ -387,6 +390,61 @@ public class AntennaTest extends RestAssuredConfig {
                 .then()
                 .body("message", equalTo("Successfully retrieved 0 antennaSpecs"))
                 .body("count", equalTo(0));
+    }
+    String entity ;
+    @Test
+    public void getToken_TriggerAToken_ReturnAntennas() {
+
+        entity = given()
+                .urlEncodingEnabled(false)
+                .when()
+                .log().all()
+                .get("/tokens")
+                .prettyPeek()
+                .then()
+                .extract()
+                .path("entity");
+
+        given()
+                .contentType(ContentType.JSON)
+                .queryParam("token", entity)
+                .log().all()
+                .when()
+                .get("/antennas")
+                .prettyPeek()
+                .then()
+                .body("message", equalTo("Successfully retrieved 4 antennas"))
+                .body("count", equalTo(4))
+                .body("entities.antennaId[0]", equalTo(1))
+                .body("entities.antennaId[1]", equalTo(2))
+                .body("entities.antennaId[2]", equalTo(3))
+                .body("entities.antennaId[3]", equalTo(4));
+    }
+    @Test
+    public void getToken_PassTokenAndIDToAntenna_CorrespondingAntennaWillBeInResultset() {
+
+        entity = given()
+                .urlEncodingEnabled(false)
+                .when()
+                .log().all()
+                .get("/tokens")
+                .prettyPeek()
+                .then()
+                .extract()
+                .path("entity");
+        given()
+                .contentType(ContentType.JSON)
+                .queryParam("token", entity)
+                .pathParam("antennaId", 1)
+
+                .log().all()
+                .when()
+                .get("/antennas/{antennaId}")
+                .prettyPeek()
+                .then()
+                .body("message", equalTo("Successfully retrieved Antenna"))
+                .body("entity.antennaId", equalTo(1));
+
     }
 
 }
