@@ -1,5 +1,6 @@
 package comm.service.tests;
 
+import com.jayway.restassured.http.ContentType;
 import comm.service.model.RestAssuredConfig;
 import org.testng.annotations.Test;
 
@@ -389,6 +390,61 @@ public class AntennaTest extends RestAssuredConfig {
                 .then()
                 .body("message", equalTo("Successfully retrieved 0 antennaSpecs"))
                 .body("count", equalTo(0));
+    }
+    String entity ;
+    @Test
+    public void getToken_TriggerAToken_ReturnAntennas() {
+
+        entity = given()
+                .urlEncodingEnabled(false)
+                .when()
+                .log().all()
+                .get("/tokens")
+                .prettyPeek()
+                .then()
+                .extract()
+                .path("entity");
+
+        given()
+                .contentType(ContentType.JSON)
+                .queryParam("token", entity)
+                .log().all()
+                .when()
+                .get("/antennas")
+                .prettyPeek()
+                .then()
+                .body("message", equalTo("Successfully retrieved 4 antennas"))
+                .body("count", equalTo(4))
+                .body("entities.antennaId[0]", equalTo(1))
+                .body("entities.antennaId[1]", equalTo(2))
+                .body("entities.antennaId[2]", equalTo(3))
+                .body("entities.antennaId[3]", equalTo(4));
+    }
+    @Test
+    public void getToken_PassTokenAndIDToAntenna_CorrespondingAntennaWillBeInResultset() {
+
+        entity = given()
+                .urlEncodingEnabled(false)
+                .when()
+                .log().all()
+                .get("/tokens")
+                .prettyPeek()
+                .then()
+                .extract()
+                .path("entity");
+        given()
+                .contentType(ContentType.JSON)
+                .queryParam("token", entity)
+                .pathParam("antennaId", 1)
+
+                .log().all()
+                .when()
+                .get("/antennas/{antennaId}")
+                .prettyPeek()
+                .then()
+                .body("message", equalTo("Successfully retrieved Antenna"))
+                .body("entity.antennaId", equalTo(1));
+
     }
 
 }

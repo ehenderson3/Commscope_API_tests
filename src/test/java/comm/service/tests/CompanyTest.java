@@ -385,6 +385,7 @@ public class CompanyTest extends RestAssuredConfig{
 
     }
 
+
     @Test
     public void getCompanySearch_valueTrueFieldValueActiveopEQ_ResultsetContainsFalse() throws UnsupportedEncodingException {
         String valueVal = "Licensee";
@@ -416,6 +417,8 @@ public class CompanyTest extends RestAssuredConfig{
                 .body("entities.contacts[0].contactPhones.phone[0]", hasItem("111-111-1234"));
 
     }
+
+
 }
 
 
