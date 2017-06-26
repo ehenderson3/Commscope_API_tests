@@ -863,7 +863,7 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusLine("HTTP/1.1 400 ");  }
+                .statusLine("HTTP/1.1 500 ");  }
 
     @Test
     public void PostPath_NoSiteNameSegTwo_SiteNameCannotBeNull() {
@@ -925,7 +925,7 @@ public class PathTest extends RestAssuredConfig {
                 .post("/paths")
                 .prettyPeek()
                 .then()
-                .statusLine("HTTP/1.1 400 "); }
+                .statusLine("HTTP/1.1 500 "); }
 
     @Test
     public void DeletePath_ValidPaths_DeletePath() {
@@ -997,15 +997,15 @@ public class PathTest extends RestAssuredConfig {
                 .then()
                 .statusCode(200);
 
-        ArrayList myList = new ArrayList();
+/*        ArrayList myList = new ArrayList();
 
         myList.add(pathId);
         Map<String, ArrayList> mapOfList = new HashMap<String, ArrayList>();
-        mapOfList.put("pathsToDelete", myList);
+        mapOfList.put("pathsToDelete", myList);*/
 
         given()
                 .contentType(ContentType.JSON)
-                .body(mapOfList)
+                .queryParam("pathDeletes" , pathId)
                 .when()
                 .delete("/paths")
                 .prettyPeek()
@@ -1017,15 +1017,9 @@ public class PathTest extends RestAssuredConfig {
     @Test
     public void DeletePath_PathAlreadyDeactivated_UnableToDeletePath() {
 
-        ArrayList myList = new ArrayList();
-
-        myList.add(1);
-        Map<String, ArrayList> mapOfList = new HashMap<String, ArrayList>();
-        mapOfList.put("pathsToDelete", myList);
 
         given()
-                .contentType(ContentType.JSON)
-                .body(mapOfList)
+                .queryParam("pathDeletes", "1")
                 .when()
                 .delete("/paths")
                 .prettyPeek()

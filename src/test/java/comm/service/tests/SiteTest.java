@@ -10,9 +10,6 @@ import org.json.JSONObject;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -2010,15 +2007,15 @@ public class SiteTest extends RestAssuredConfig {
 
     private void deletePathCleanUp(int pathNum) {
 
-        ArrayList myList = new ArrayList();
+        //ArrayList myList = new ArrayList();
 
-        myList.add(pathNum);
+/*        myList.add(pathNum);
         Map<String, ArrayList> mapOfList = new HashMap<String, ArrayList>();
-        mapOfList.put("pathsToDelete", myList);
+        mapOfList.put("pathsToDelete", myList);*/
 
         given()
                 .contentType(ContentType.JSON)
-                .body(mapOfList)
+                .queryParam("pathDeletes" , pathNum)
                 .when()
                 .delete("/paths")
                 .prettyPeek()

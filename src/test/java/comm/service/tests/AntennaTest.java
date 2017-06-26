@@ -21,6 +21,8 @@ public class AntennaTest extends RestAssuredConfig {
 
     String search ="/antenna-specs?search=";
     String revision ="&includeRevisions=true";
+    String revisionFalse ="&includeRevisions=false";
+
     int projectId = 0;
 
     @Test
@@ -70,6 +72,56 @@ public class AntennaTest extends RestAssuredConfig {
                 .body("entity.createUser.userName", equalTo("Lego Admin"))
 
                 .body("entity.modifiedAntennaSpecs", hasItem(2));
+    }
+
+
+    @Test
+        public void getAntennaSpecsSearch_revisionFalse_ResultsetContainsRevisions() throws UnsupportedEncodingException {
+            String valueVal = "P8F-9";
+            String fieldVal = "modelNumber";
+            String operatorVal = "EQ";
+            String url = "[[{\"value\":\"" + valueVal + "\",\"field\":\"" + fieldVal + "\",\"operator\":\""+operatorVal+"\"}]]";
+            String stringEncoded = URLEncoder.encode(url, "UTF-8");
+            given()
+                    .urlEncodingEnabled(false)
+                    .when()
+                    .log().all()
+                    .get(search+stringEncoded+revisionFalse)
+                    .prettyPeek()
+                    .then()
+                    .body("message", equalTo("Successfully retrieved 4 antennaSpecs"))
+                    .body("count", equalTo(4))
+                    .body("entities.antennaSpecId", hasItem(1))
+                    .body("entities.antennaSpecId", hasItem(2))
+                    .body("entities.antennaSpecId", hasItem(3))
+                    .body("entities.antennaSpecId", hasItem(4))
+;
+        }
+
+    @Test
+    public void getAntennaSpecsSearch_revisionTrue_ResultsetContainsRevisions() throws UnsupportedEncodingException {
+        String valueVal = "P8F-9";
+        String fieldVal = "modelNumber";
+        String operatorVal = "EQ";
+        String url = "[[{\"value\":\"" + valueVal + "\",\"field\":\"" + fieldVal + "\",\"operator\":\""+operatorVal+"\"}]]";
+        String stringEncoded = URLEncoder.encode(url, "UTF-8");
+        given()
+                .urlEncodingEnabled(false)
+                .when()
+                .log().all()
+                .get(search+stringEncoded+revision)
+                .prettyPeek()
+                .then()
+                .body("message", equalTo("Successfully retrieved 7 antennaSpecs"))
+                .body("count", equalTo(7))
+                .body("entities.antennaSpecId", hasItem(1))
+                .body("entities.antennaSpecId", hasItem(2))
+                .body("entities.antennaSpecId", hasItem(2))
+                .body("entities.antennaSpecId", hasItem(3))
+                .body("entities.antennaSpecId", hasItem(3))
+                .body("entities.antennaSpecId", hasItem(4))
+                .body("entities.antennaSpecId", hasItem(4));
+
     }
 
     @Test
@@ -149,7 +201,6 @@ public class AntennaTest extends RestAssuredConfig {
 
     }
 
-//?search=[[{value:"P8F-9",field:antennaModel,operator:EQ}]]
 
     @Test
     public void getAntennaSpecsSearch_valueP8F9FiveldmodelNumberOpNot_ResultsetContainsNotP8F9FieldantennaCode() throws UnsupportedEncodingException {
@@ -420,6 +471,58 @@ public class AntennaTest extends RestAssuredConfig {
                 .body("entities.antennaId[2]", equalTo(3))
                 .body("entities.antennaId[3]", equalTo(4));
     }
+
+
+    @Test
+    public void getToken_InvalidToken_Return403() {
+
+        given()
+                .contentType(ContentType.JSON)
+                .queryParam("token", "dgd")
+                .log().all()
+                .when()
+                .get("/antennas")
+                .prettyPeek()
+                .then()
+                .statusLine("HTTP/1.1 403 ")
+                .body("message", equalTo("Error Validating the authentication token, token is not valid"))
+;
+    }
+    @Test
+    public void getToken_NoToken_Return500() {
+
+        given()
+                .contentType(ContentType.JSON)
+                .queryParam("token", "")
+                .log().all()
+                .when()
+                .get("/antennas")
+                .prettyPeek()
+                .then()
+                .statusLine("HTTP/1.1 500 ")
+                .body("message", equalTo("Internal Server Error.  Error getting list of antennas"))
+
+        ;
+    }
+    String aNull = null;
+
+    @Test
+    public void getToken_Null_Return500() {
+
+        given()
+                .contentType(ContentType.JSON)
+                .queryParam("token", aNull)
+                .log().all()
+                .when()
+                .get("/antennas")
+                .prettyPeek()
+                .then()
+                .statusLine("HTTP/1.1 500 ")
+                .body("message", equalTo("Internal Server Error.  Error getting list of antennas"))
+
+        ;
+    }
+
     @Test
     public void getToken_PassTokenAndIDToAntenna_CorrespondingAntennaWillBeInResultset() {
 
