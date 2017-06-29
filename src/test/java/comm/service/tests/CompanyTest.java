@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class CompanyTest extends RestAssuredConfig{
     Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(100000);
+    private int randomNumber = rndNum.nextInt(100000);
 
     /*
     MethodName_StateUnderTest_ExpectedBehavior:
@@ -26,9 +26,9 @@ public class CompanyTest extends RestAssuredConfig{
         withdrawMoney_InvalidAccount_ExceptionThrown
         admitStudent_MissingMandatoryFields_FailToAdmit
      */
-    String search ="/companies?search=";
-    String active ="&active=true";
-    String notActive ="&active=false";
+    private String search ="/companies?search=";
+    private String active ="&active=true";
+    private String notActive ="&active=false";
 
     @Test()
     public void GetCompanies_FindCompanyWithChildren_Returns200StatusCode() {

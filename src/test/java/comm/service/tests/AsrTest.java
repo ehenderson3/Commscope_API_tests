@@ -12,15 +12,9 @@ import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 public class AsrTest extends RestAssuredConfig {
-    Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(1000);
-    int randomNumber1 = rndNum.nextInt(1000);
-    int randomNumber2 = rndNum.nextInt(1000);
-    int randomNumber3 = rndNum.nextInt(1000);
-    int randomNumber4 = rndNum.nextInt(1000);
-    int randomNumber5 = rndNum.nextInt(1000);
-    int randomNumber6 = rndNum.nextInt(1000);
-    int randomNumber7 = rndNum.nextInt(1000);
+    private Random rndNum = new Random();
+    private int randomNumber1 = rndNum.nextInt(1000);
+
 
 
     @DataProvider(name = "Default Licensee")
@@ -42,8 +36,8 @@ public class AsrTest extends RestAssuredConfig {
         admitStudent_MissingMandatoryFields_FailToAdmit
      */
 
-    int licenseeId = 0;
-    int projectId = 0;
+    private int licenseeId = 0;
+    private int projectId = 0;
 
 
     @Test

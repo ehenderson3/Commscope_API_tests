@@ -16,15 +16,13 @@ import static comm.service.tests.common.Data.*;
 import static org.hamcrest.Matchers.*;
 
 public class ProjectTest extends RestAssuredConfig {
-    Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(1000);
-    int randomNumber1 = rndNum.nextInt(1000);
-    int randomNumber2 = rndNum.nextInt(1000);
-    int randomNumber3 = rndNum.nextInt(1000);
-    int randomNumber4 = rndNum.nextInt(1000);
-    int randomNumber5 = rndNum.nextInt(1000);
-    int randomNumber6 = rndNum.nextInt(1000);
-    int randomNumber7 = rndNum.nextInt(1000);
+    private Random rndNum = new Random();
+    private int randomNumber1 = rndNum.nextInt(1000);
+    private int randomNumber2 = rndNum.nextInt(1000);
+    private int randomNumber3 = rndNum.nextInt(1000);
+    private int randomNumber4 = rndNum.nextInt(1000);
+    private int randomNumber5 = rndNum.nextInt(1000);
+    private int randomNumber6 = rndNum.nextInt(1000);
 
     @DataProvider(name = "Default Licensee")
     public Object[][] createLicData() {

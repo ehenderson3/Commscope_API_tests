@@ -17,9 +17,9 @@ import static org.hamcrest.Matchers.*;
 
 public class SiteTest extends RestAssuredConfig {
     Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(1000);
-    int pathId = 0;
-    String siteName1 = null;
+    private int randomNumber = rndNum.nextInt(1000);
+    private int pathId = 0;
+    private String siteName1 = null;
 
     @DataProvider(name = "Default Licensee")
     public Object[][] createLicData() {
@@ -28,7 +28,7 @@ public class SiteTest extends RestAssuredConfig {
         };
     }
 
-    int projectId = 0;
+    private int projectId = 0;
 
     @Test
     public void getSingleSiteSearch_SearchCriteriaSiteNameuniqueSite100_ResultsetContainsSiteNameuniqueSite100(){

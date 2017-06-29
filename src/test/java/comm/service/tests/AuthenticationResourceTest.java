@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class AuthenticationResourceTest extends RestAssuredConfig {
     Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(1000);
+    private int randomNumber = rndNum.nextInt(1000);
 
 
     /*
@@ -23,7 +23,7 @@ public class AuthenticationResourceTest extends RestAssuredConfig {
         admitStudent_MissingMandatoryFields_FailToAdmit
      */
 
-    int domain = 1;
+    private int domain = 1;
 
 
     @Test

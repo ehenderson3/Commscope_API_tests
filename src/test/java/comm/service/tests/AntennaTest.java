@@ -14,16 +14,16 @@ import static org.hamcrest.Matchers.hasItem;
 
 public class AntennaTest extends RestAssuredConfig {
     Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(1000);
-    int pathId = 0;
-    String siteName1 = null;
+    private int randomNumber = rndNum.nextInt(1000);
+    private int pathId = 0;
+    private String siteName1 = null;
 
 
-    String search ="/antenna-specs?search=";
-    String revision ="&includeRevisions=true";
-    String revisionFalse ="&includeRevisions=false";
+    private String search ="/antenna-specs?search=";
+    private String revision ="&includeRevisions=true";
+    private String revisionFalse ="&includeRevisions=false";
 
-    int projectId = 0;
+    private int projectId = 0;
 
     @Test
     public void getAntennaSpecsSearch_valueV1234FieldantennaCodeOpLike_ResultsetContainsV1234FieldantennaCode(){

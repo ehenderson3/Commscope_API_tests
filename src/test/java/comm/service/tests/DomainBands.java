@@ -23,7 +23,7 @@ public class DomainBands extends RestAssuredConfig {
         admitStudent_MissingMandatoryFields_FailToAdmit
      */
 
-    int domain = 1;
+    private int domain = 1;
 
 
     @Test

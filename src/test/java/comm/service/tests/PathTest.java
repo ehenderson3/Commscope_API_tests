@@ -18,14 +18,14 @@ import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class PathTest extends RestAssuredConfig {
-    Random rndNum = new Random();
-    int randomNumber6 = rndNum.nextInt(1000);
+    private Random rndNum = new Random();
+    private int randomNumber6 = rndNum.nextInt(1000);
 
     Gson gson = new Gson();
 
-    int pathId = 0;
-    int projectId = 0;
-    int licenseeId = 0;
+    private int pathId = 0;
+    private int projectId = 0;
+    private int licenseeId = 0;
 
 
     @Test
