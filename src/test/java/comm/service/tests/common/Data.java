@@ -12,6 +12,7 @@ public class Data {
 
     public static final String ERROR_CANNOT_DESERIALIZE_STRING = "Could not read document: Can not deserialize value of type java.lang.Integer from String ";
     public static final String ERROR_CANNOT_DESERIALIZE_FLOAT = "Could not read document: Can not deserialize value of type java.lang.Float from String ";
+    public static final String ERROR_CANNOT_DESERIALIZE_DUB = "Could not read document: Can not deserialize value of type java.lang.Double from String ";
 
     public static final String ERROR_CANNOT_DESERIALIZE_INT = "Could not read document: Can not deserialize value of type java.lang.Integer from String ";
     public static final String PROJECT_SUCCESS_MESSAGE = "Successfully updated Project";
