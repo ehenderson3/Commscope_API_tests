@@ -9,8 +9,8 @@ import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class RadioTest extends RestAssuredConfig {
-    Random rndNum = new Random();
-    int randomNumber = rndNum.nextInt(1000);
+    private Random rndNum = new Random();
+    private int randomNumber = rndNum.nextInt(1000);
 
 
     /*
@@ -23,7 +23,7 @@ public class RadioTest extends RestAssuredConfig {
         admitStudent_MissingMandatoryFields_FailToAdmit
      */
 
-    int domain = 1;
+    private int domain = 1;
 
 
     @Test

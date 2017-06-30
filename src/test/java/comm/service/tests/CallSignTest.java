@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 public class CallSignTest extends RestAssuredConfig {
     Random rndNum = new Random();
-    int randomNumber1 = rndNum.nextInt(1000);
+    private int randomNumber1 = rndNum.nextInt(1000);
 
 
     @DataProvider(name = "Default Licensee")
@@ -25,8 +25,8 @@ public class CallSignTest extends RestAssuredConfig {
 
     }
 
-    int licenseeId = 0;
-    int projectId = 0;
+    private int licenseeId = 0;
+    private int projectId = 0;
 
 
     @Test
