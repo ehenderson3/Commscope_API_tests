@@ -1,5 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
-/.idea/
 .idea/
 target/generated-sources/
 target/generated-test-sources/
@@ -8,3 +7,5 @@ target/surefire-reports/
 commsearch-service-tests.iml
 target/classes/comm/service/model/RestAssuredConfig.class
 /commsearch-service-tests.iml
+target/
+/commsearch-restful-integration-tests.iml
