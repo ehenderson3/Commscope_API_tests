@@ -490,7 +490,7 @@ public class PathTest extends RestAssuredConfig {
                 .statusLine("HTTP/1.1 422 ")
                 .statusCode(422)
                 .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Ground Elevation cannot be null', propertyPath=groundElevation, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Ground Elevation cannot be null'}\n]"));
+                .body("message", is("Ground Elevation cannot be null"));
     }
 
     @Test
@@ -555,7 +555,7 @@ public class PathTest extends RestAssuredConfig {
                 .statusCode(422)
                 .statusLine("HTTP/1.1 422 ")
                 .body("status", is("Error"))
-                .body("message", is("Validation failed for classes [com.commscope.comsearch.entity.main.SegmentEnd] during persist time for groups [javax.validation.groups.Default, ]\nList of constraint violations:[\n\tConstraintViolationImpl{interpolatedMessage='Ground Elevation cannot be null', propertyPath=groundElevation, rootBeanClass=class com.commscope.comsearch.entity.main.SegmentEnd, messageTemplate='Ground Elevation cannot be null'}\n]"));
+                .body("message", is("Ground Elevation cannot be null"));
     }
 
     @Test

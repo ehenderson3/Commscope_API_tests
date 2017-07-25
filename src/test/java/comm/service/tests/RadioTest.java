@@ -7,6 +7,7 @@ import java.util.Random;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 
 public class RadioTest extends RestAssuredConfig {
     private Random rndNum = new Random();
@@ -44,8 +45,8 @@ public class RadioTest extends RestAssuredConfig {
                 .body("entity.radioType.radioTypeId", equalTo(2))
                 .body("entity.radioType.radioType", equalTo("D ­ Digital"))
 
-                .body("entity.companyViewDto.companyId", equalTo(9))
-                .body("entity.companyViewDto.companyName", equalTo("Exalt Communications Inc."))
+                .body("entity.company.companyId", equalTo(9))
+                .body("entity.company.companyName", equalTo("Exalt Communications Inc."))
                 .body("entity.modulationType.modulationTypeId", equalTo(2))
                 .body("entity.modulationType.modulationType", equalTo("A ­ Adaptive"))
 
@@ -56,10 +57,10 @@ public class RadioTest extends RestAssuredConfig {
                 .body("entity.hiFrequency", equalTo(11700.0f))
                 .body("entity.powerType", equalTo(null))
                 .body("entity.stability", equalTo(7.0E-4f))
-                .body("entity.dynamicPowerFlag", equalTo(null))
+                .body("entity.dynamicPowerFlag", equalTo(false))
                 .body("entity.atpcFlag", equalTo(false))
                 .body("entity.atpcType", equalTo(null))
-                .body("entity.atpcAlarmFlag", equalTo(null))
+                .body("entity.atpcAlarmFlag", equalTo(false))
                 .body("entity.status.statusId", equalTo(1))
                 .body("entity.status.status", equalTo("Active"))
                 .body("entity.xpic", equalTo(null))
@@ -74,8 +75,61 @@ public class RadioTest extends RestAssuredConfig {
                 .body("entity.createUser.userName", equalTo("Lego Admin"))
                 .body("entity.lastModifiedUser.userId", equalTo(1))
                 .body("entity.lastModifiedUser.userName", equalTo("Lego Admin"))
-                .body("entity.modifiedRadio", equalTo(0))
-                .body("entity.radioModulations", equalTo(null))
+                .body("entity.modifiedRadio", equalTo(null))
+                .body("entity.radioModulations.radioModulationId", hasItem(1))
+                .body("entity.radioModulations.modelNumber", hasItem("E11E732-490X1_1"))
+                .body("entity.radioModulations[0].throughput", equalTo(262.0f))
+                .body("entity.radioModulations[0].coChannelTToI", equalTo(null))
+                .body("entity.radioModulations[0].emissionDesignator", equalTo("40M0D7W"))
+                .body("entity.radioModulations[0].bandwidth", equalTo(40.0f))
+                .body("entity.radioModulations[0].modulationScheme.modulationSchemeId", equalTo(1))
+                .body("entity.radioModulations.modulationScheme.modulationSchemeDescription.modulationSchemeDescriptionId[0]", equalTo(13))
+                .body("entity.radioModulations.modulationScheme.modulationSchemeDescription.modulationSchemeDescription[0]", equalTo("256 QAM"))
+                .body("entity.radioModulations.modulationScheme.modulationSchemeDescription.modulationType[0]", equalTo("Digital"))
+                .body("entity.radioModulations.modulationScheme.modulationSchemeType.modulationSchemeTypeId[0]", equalTo(2))
+                .body("entity.radioModulations.modulationScheme.modulationSchemeType.modulationSchemeType[0]", equalTo("D ­ Digital"))
+                .body("entity.radioModulations.modulationScheme.dfltCoChannelTToI[0]", equalTo(null))
+
+
+                .body("entity.radioModulations.modulationScheme.numAnalogChannels[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.analogBandwidth[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.analogPerChannelLoad[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.analogPerChannelRmsDev[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.analogMinBasebandFreq[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.analogMaxBasebandFreq[0]", equalTo(null))
+
+                .body("entity.radioModulations.downThreshold[0]", equalTo(-61.5f))
+                .body("entity.radioModulations.rxThreshold[0]", equalTo(-64.5f))
+                .body("entity.radioModulations.upThreshold[0]", equalTo(-59.5f))
+                .body("entity.radioModulations.dispersiveFm[0]", equalTo(null))
+                .body("entity.radioModulations.txPowerMax[0]", equalTo(20.0f))
+                .body("entity.radioModulations.txPowerMin[0]", equalTo(-20.0f))
+                .body("entity.radioModulations.maxRxSignalDbm[0]", equalTo(-25.0f))
+                .body("entity.radioModulations.receiverNoiseFigure[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.minAtpcTrigger[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.maxAtpcTrigger[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.xpif[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme[0].minSignatureDepth", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.maxSignatureDepth[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.minSignatureWidth[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.maxSignatureWidth[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.minDelay[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.radioCurveSet[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.associatedFixModulation[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.radioByRadioId[0]", equalTo(null))
+                .body("entity.radioModulations.modulationScheme.enabled[0]", equalTo(null))
+
+
+
+
+
+
+
+
+
+
+
+
 
         ;
 
