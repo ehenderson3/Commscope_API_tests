@@ -6,7 +6,7 @@
 
     <groupId>commsearch-api-tests</groupId>
     <artifactId>commsearch-restful-integration-tests</artifactId>
-    <version>0.0.12-SNAPSHOT</version>
+    <version>0.0.11-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
