@@ -37,7 +37,7 @@ public class RadioTest extends RestAssuredConfig {
                 .prettyPeek()
                 .then()
                 .statusCode(200)
-                .body("message", equalTo("Successfully retrieved Antenna"))
+                .body("message", equalTo("Successfully retrieved Radio"))
                 .body("entity.radioCode", equalTo("X11A22"))
                 .body("entity.radioId", equalTo(1))
                 .body("entity.radioFamily.radioFamilyId", equalTo(24))

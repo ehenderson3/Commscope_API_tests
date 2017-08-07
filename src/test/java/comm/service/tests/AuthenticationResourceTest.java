@@ -51,7 +51,7 @@ public class AuthenticationResourceTest extends RestAssuredConfig {
                 .prettyPeek()
                 .then()
                 .statusCode(401)
-                .body("message", equalTo("User Id and password are not valid. Please try again"));
+                .body("message", equalTo("LegoUser Id and password are not valid. Please try again"));
 
     }
 
@@ -66,7 +66,7 @@ public class AuthenticationResourceTest extends RestAssuredConfig {
                 .prettyPeek()
                 .then()
                 .statusCode(401)
-                .body("message", equalTo("User Id and password are not valid. Please try again"));
+                .body("message", equalTo("LegoUser Id and password are not valid. Please try again"));
 
     }
 
