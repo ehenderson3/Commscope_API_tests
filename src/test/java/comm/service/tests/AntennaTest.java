@@ -75,10 +75,23 @@ public class AntennaTest extends RestAssuredConfig {
     }
 
 
+    /**COM-542
+     * Acceptance Criteria
+     full revisions only IF ( search by /antenna-specs/antenna-code/DC1234?includeRevisions=true)
+     only search revisions if 6 characters (full code) is searched
+     only search revisions if include revisions is TRUE
+     one step revisions (for all the existing 2D array search)
+     include revisions is TRUE
+     /antenna-specs?search=[[\{"value": "02306AY", "field": "antennaCode", "operator": "LIKE"}]]&includeRevisions=true
+     Swagger UI
+     https://comsearch.dev.surgeforward.com:8443/swagger-ui.html#!/antenna-spec-resource/getAllAntennaSpecsUsingGET
+     * @throws UnsupportedEncodingException
+     */
+
     @Test
-        public void getAntennaSpecsSearch_revisionFalse_ResultsetContainsRevisions() throws UnsupportedEncodingException {
-            String valueVal = "P8F-9";
-            String fieldVal = "modelNumber";
+        public void getAntennaSpecsSearch_revisionFalseEQ_ResultsetContainsRevisions() throws UnsupportedEncodingException {
+            String valueVal = "02306AZ";
+            String fieldVal = "antennaCode";
             String operatorVal = "EQ";
             String url = "[[{\"value\":\"" + valueVal + "\",\"field\":\"" + fieldVal + "\",\"operator\":\""+operatorVal+"\"}]]";
             String stringEncoded = URLEncoder.encode(url, "UTF-8");
@@ -86,17 +99,78 @@ public class AntennaTest extends RestAssuredConfig {
                     .urlEncodingEnabled(false)
                     .when()
                     .log().all()
-                    .get(search+stringEncoded+revisionFalse)
+                    .get(search+stringEncoded+revision)
                     .prettyPeek()
                     .then()
-                    .body("message", equalTo("Successfully retrieved 4 antennaSpecs"))
-                    .body("count", equalTo(4))
-                    .body("entities.antennaSpecId", hasItem(1))
-                    .body("entities.antennaSpecId", hasItem(2))
-                    .body("entities.antennaSpecId", hasItem(3))
-                    .body("entities.antennaSpecId", hasItem(4))
-;
+                    .body("message", equalTo("Successfully retrieved 5 antennaSpecs"))
+                    .body("count", equalTo(5))
+                    .body("entities.antennaSpecId[0]", equalTo(1))
+                    .body("entities.antennaSpecId[1]", equalTo(2))
+                    .body("entities.antennaSpecId[2]", equalTo(2))
+                    .body("entities.antennaSpecId[3]", equalTo(2))
+                    .body("entities.antennaSpecId[4]", equalTo(2))
+                    .body("entities.antennaCode[0]", equalTo("02306AZ"))
+                    .body("entities.antennaCode[1]", equalTo("02306AY"))
+                    .body("entities.antennaCode[2]", equalTo("02306AY"))
+                    .body("entities.antennaCode[3]", equalTo("02306AY"))
+                    .body("entities.antennaCode[4]", equalTo("02306AY"))
+
+
+
+            ;
         }
+    @Test
+    public void getAntennaSpecsSearch_revisionFalseLIKE_ResultsetContainsRevisions() throws UnsupportedEncodingException {
+        String valueVal = "02306AZ";
+        String fieldVal = "antennaCode";
+        String operatorVal = "LIKE";
+        String url = "[[{\"value\":\"" + valueVal + "\",\"field\":\"" + fieldVal + "\",\"operator\":\""+operatorVal+"\"}]]";
+        String stringEncoded = URLEncoder.encode(url, "UTF-8");
+        given()
+                .urlEncodingEnabled(false)
+                .when()
+                .log().all()
+                .get(search+stringEncoded+revision)
+                .prettyPeek()
+                .then()
+                .body("message", equalTo("Successfully retrieved 5 antennaSpecs"))
+                .body("count", equalTo(5))
+                .body("entities.antennaSpecId[0]", equalTo(1))
+                .body("entities.antennaSpecId[1]", equalTo(2))
+                .body("entities.antennaSpecId[2]", equalTo(2))
+                .body("entities.antennaSpecId[3]", equalTo(2))
+                .body("entities.antennaSpecId[4]", equalTo(2))
+                .body("entities.antennaCode[0]", equalTo("02306AZ"))
+                .body("entities.antennaCode[1]", equalTo("02306AY"))
+                .body("entities.antennaCode[2]", equalTo("02306AY"))
+                .body("entities.antennaCode[3]", equalTo("02306AY"))
+                .body("entities.antennaCode[4]", equalTo("02306AY"))
+
+        ;
+    }
+
+    @Test
+    public void getAntennaSpecsSearch_revisionTrue_ResultError() throws UnsupportedEncodingException {
+        String valueVal = "P8F-9";
+        String fieldVal = "modelNumber";
+        String operatorVal = "EQ";
+        String url = "[[{\"value\":\"" + valueVal + "\",\"field\":\"" + fieldVal + "\",\"operator\":\""+operatorVal+"\"}]]";
+        String stringEncoded = URLEncoder.encode(url, "UTF-8");
+        given()
+                .urlEncodingEnabled(false)
+                .when()
+                .log().all()
+                .get(search+stringEncoded+revisionFalse)
+                .prettyPeek()
+                .then()
+                .body("message", equalTo("Successfully retrieved 16 antennaSpecs"))
+                .body("count", equalTo(4))
+                .body("entities.antennaSpecId", hasItem(1))
+                .body("entities.antennaSpecId", hasItem(2))
+                .body("entities.antennaSpecId", hasItem(3))
+                .body("entities.antennaSpecId", hasItem(4))
+        ;
+    }
 
     @Test
     public void getAntennaSpecsSearch_revisionTrue_ResultsetContainsRevisions() throws UnsupportedEncodingException {

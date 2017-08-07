@@ -1,8 +1,12 @@
 package comm.service.tests;
 
+import com.jayway.restassured.http.ContentType;
+import comm.service.model.RadioModel;
 import comm.service.model.RestAssuredConfig;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -24,9 +28,89 @@ public class RadioTest extends RestAssuredConfig {
         admitStudent_MissingMandatoryFields_FailToAdmit
      */
 
-    private int domain = 1;
+
+    //COM-540
+
+    /**
+     * To test RadioViewDto please do the following:
+     Create Radio Favorite via the POST /radios/create-favorite
+     {
+     "radioId": 2,
+     "radioModulations": [15, 16],
+     "createUserId" : 1
+     }
+     */
+
+    @Test
+    public void postRadioFav_WhenFavoriteIsCreated16_AFavIdWillBeCreated(){
+        List<Integer> myList = new ArrayList();
+        myList.add(16);
+
+        RadioModel radio = new RadioModel(2, myList, 1);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(radio)
+                .when()
+                .post("/radios/create-favorite")
+                .prettyPeek()
+                .then()
+                .statusCode(201)
+                .body("entity.radioCode",equalTo("X06356"))
+                .body("entity.radioFavorite.radioFavoriteId",equalTo(5))
+                .body("entity.radioFavorite.favoriteRadioCode",equalTo("X06356-1"));
+    }
+
+    @Test
+    public void postRadioFav_WhenFavoriteIsCreated17_AFavIdWillBeCreated(){
+        List<Integer> myList = new ArrayList();
+        myList.add(17);
+
+        RadioModel radio = new RadioModel(2, myList, 1);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(radio)
+                .when()
+                .post("/radios/create-favorite")
+                .prettyPeek()
+                .then()
+                .statusCode(201)
+                .body("entity.radioCode",equalTo("X06356"))
+                .body("entity.radioFavorite.radioFavoriteId",equalTo(6))
+                .body("entity.radioFavorite.favoriteRadioCode",equalTo("X06356-2"));
+    }
+
+    /**COM-540
+     * Another item this ticket provides is with validating when a RadioFavorite is used that the modulations added to the segment end belong to the RadioFavorite set.
+     In the example below, we are creating a path that has a segment end using radioFavoriteId of 12, the newly created radioFavoriteId in the example from the comment above.
+     We are setting the radioModulationConfiguration object with radioModulationId of 14. Note that the radioFavorite we created uses radioModulationId 15 and 16, not 14.
+     */
+    @Test
+    public void postRadioFav_WhenModBelongToAFavSet_RadioModulationsSelectedDoNotBelongRadioFavorite(){
+        List<Integer> myList = new ArrayList();
+        myList.add(14);
+
+        RadioModel radio = new RadioModel(1, myList, 1);
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(radio)
+                .when()
+                .post("/radios/create-favorite")
+                .prettyPeek()
+                .then()
+                .statusCode(422)
+                .body("message",equalTo("Radio Modulations in the Favorite need to belong to the Radio Code: X11A22"));
+
+    }
 
 
+    //TODO Sprint 14
+    /**
+     * This ticket also add the ability to create a path with it's segment ends using a radioFavorite. Example below shows the create json object to create a path with segment ends using radioFavorites.
+     NOTE: There is no radioId but instead a radioFavoriteId. The application will use the radio associated with the radioFavorite.
+     */
     @Test
     public void GetRadios_ValidRadioId_ReturnRadioDataRelatedToSpecificID() {
 
