@@ -1152,7 +1152,7 @@ public class SiteTest extends RestAssuredConfig {
                         "value%22%3A%20%22"+ valVal_2 +"%22%2C%20%22field%22%3A%20%22"+ fieldVal_2 +"%22%2C%20%22operator%22%3A%20%22"+ opVal_2 +"%22%7D%5D")
                 .prettyPeek()
                 .then()
-                .body("entities.siteName", hasItem("LIKECoIdSiteA"))
+                .body("entities.siteName", hasItem("SearchCompanyId1"))
                 .body("entities.company.companyId", hasItem(1))
                 .body("entities.callSign", hasItem("KA2071"))
                 .body("entities.latitude", hasItem(88.0f))

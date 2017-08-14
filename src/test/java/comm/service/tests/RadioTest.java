@@ -57,7 +57,7 @@ public class RadioTest extends RestAssuredConfig {
                 .then()
                 .statusCode(201)
                 .body("entity.radioCode",equalTo("X06356"))
-                .body("entity.radioFavorite.radioFavoriteId",equalTo(5))
+                .body("entity.radioFavorite.radioFavoriteId",equalTo(2))
                 .body("entity.radioFavorite.favoriteRadioCode",equalTo("X06356-1"));
     }
 
@@ -77,7 +77,7 @@ public class RadioTest extends RestAssuredConfig {
                 .then()
                 .statusCode(201)
                 .body("entity.radioCode",equalTo("X06356"))
-                .body("entity.radioFavorite.radioFavoriteId",equalTo(6))
+                .body("entity.radioFavorite.radioFavoriteId",equalTo(3))
                 .body("entity.radioFavorite.favoriteRadioCode",equalTo("X06356-2"));
     }
 
